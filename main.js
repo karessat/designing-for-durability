@@ -60,7 +60,7 @@ const units = roster.map((u) => {
 const fateText = {
   faulty: "replaced because it was faulty",
   working: "still worked when replaced",
-  other: "replaced for another reason — a move, a renovation, a gift"
+  other: "replaced for a reason the study does not report"
 };
 function showTip(u, x, y) {
   popTip.innerHTML = `<span class="t">UNIT ${String(u.id + 1).padStart(3, "0")} · ${u.label.toUpperCase()}</span><br>` +

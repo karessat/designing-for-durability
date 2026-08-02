@@ -21,20 +21,22 @@ const R2R_COVERAGE = [
 /* STILE assessment, August 2026. Scale: 1 = condition in place, 3 = condition absent (Hines & McBride). */
 const STILE = [
   { key: "S", name: "Social acceptance", score: 2.0,
-    rationale: "Holding behavior has shifted: vehicles at a record 12.8-year average age, 42% of iPhone buyers retiring devices held three or more years. Appliance purchase behavior remains price-led, and stated willingness to pay for sustainability (59%, Eurobarometer) collapses to 17% at the register (BCG)." },
+    rationale: "Holding behavior has shifted in the categories that are tracked: vehicles at a record 12.8-year average age, 42% of U.S. iPhone buyers retiring devices held three or more years. No equivalent series exists for appliances. Survey answers on paying more for sustainable products range from 59% (Eurobarometer) down to 17% for a green premium (BCG) — both stated intent, and the spread is wide enough that neither settles the question." },
   { key: "T", name: "Technological capability", score: 1.5,
-    rationale: "Modular, repairable architectures ship today: Framework's swappable mainboards, Prusa's self-assembled and upgradeable printers, SEB's 15-year parts commitment, Speed Queen's 25-year test standard. Nothing about a durable appliance awaits invention." },
+    rationale: "Modular, repairable architectures ship today: Framework's swappable mainboards, Prusa's self-assembled and upgradeable printers, SEB's 15-year parts commitment, Speed Queen's 25-year test standard. The engineering problems are ones that other manufacturers have already solved, at smaller volumes." },
   { key: "I", name: "Infrastructure", score: 2.5,
-    rationale: "Parts distribution, independent repair networks, and technician supply are thin, and the trades workforce is aging. U.S. appliance repair is a $7.0B industry fragmented across roughly 37,800 businesses with no firm above 5% share (IBISWorld). This is the binding constraint." },
+    rationale: "U.S. appliance repair is a $7.0B industry spread across roughly 37,800 businesses with no firm above 5% share (IBISWorld, commercial source). A sector that size and that fragmented has no national parts-and-service backbone for a manufacturer to plug into. This is the binding constraint on the shift." },
   { key: "L", name: "Legal clearance", score: 1.5,
-    rationale: "Eight states have enacted repair statutes; coverage reaches roughly 35% of Americans in fall 2026. EU repair obligations applied from July 2026. France mandates a durability score at the point of sale. The FTC consent order against Deere sets the enforcement precedent." },
+    rationale: "Eight states have repair statutes in force and Texas follows in September; coverage reaches roughly 35% of Americans in fall 2026. EU repair obligations applied from July 2026. France mandates a durability score at the point of sale for two categories. The FTC consent order against Deere sets an enforcement precedent, though it is proposed rather than final, and several state laws — Oregon's among them — carry no penalties until 2027." },
   { key: "E", name: "Entrepreneurial zeal", score: 2.5,
-    rationale: "Champions are niche: Speed Queen, Miele, Framework, Prusa, Bundles. No mass-market U.S. manufacturer has claimed the position, and the appliance trade association has opposed repair legislation. The vacancy is the opportunity." }
+    rationale: "Champions are niche: Speed Queen, Miele, Framework, Prusa, Bundles. No mass-market U.S. manufacturer has claimed the position, and AHAM, the appliance trade association, has opposed repair legislation. The vacancy is the opportunity." }
 ];
 
 /* Population stage: shares from UBA / Öko-Institut (2016), German household data.
    55.6% of replacements faulty (2012/13); about one third still functioning; 8.3% replaced
-   within five years due to defect (up from 3.5% in 2004). Population is illustrative. */
+   within five years due to a defect (up from 3.5% in 2004). Those two categories leave ~11%
+   unaccounted for in the source; those units are shown untinted and labeled as such.
+   Population is illustrative — the shares are real, the individual units are not. */
 const POP = { total: 100, faulty: 56, working: 33, earlyFail: 8 };
 
 const POP_TYPES = [
