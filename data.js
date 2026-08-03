@@ -49,7 +49,7 @@ const STILE = [
     rationale:"Yes, and it already is. Framework sells laptops whose main board you can swap. Prusa sells printers you build yourself and upgrade later. Groupe SEB keeps parts for fifteen years. Speed Queen tests washers to twenty-five years of use. Nobody has to invent anything.",
     watch:"A big manufacturer shipping a modular machine at a normal price. That would move this to 1." },
   { key:"I", name:"Is there a system to support it?", short:"Infrastructure", score:2.5,
-    rationale:"No. Fixing appliances in the U.S. is a $7.0B business split among roughly 37,800 firms, none holding more than 5% of it. There is no national repair network a manufacturer can plug into, and no way to get an old machine back from a customer. This is the thing that is actually missing.",
+    rationale:"No. Fixing appliances in the U.S. is a $7.0B business split among roughly 37,800 firms, none holding more than 5% of it. There is no national repair network a manufacturer can plug into, and no way to recover an old machine from a customer. This is the thing that is actually missing.",
     watch:"Anyone building or buying a national repair and parts network. Also whether delivery crews start bringing old machines back instead of scrapping them." },
   { key:"L", name:"Is it allowed and encouraged?", short:"Legal clearance", score:1.5,
     rationale:"Yes, and increasingly required. Eight states have repair laws in force, Texas makes nine in September, and that covers about 35% of Americans. Europe has set dates through 2030 for products to be durable and repairable. France prints a durability score next to the price. The FTC has taken a manufacturer to court over locking up repair tools and won terms.",
