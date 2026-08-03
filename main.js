@@ -280,7 +280,8 @@ const handlers = {
   "sig-s3b":   () => { sigShow("s3"); litTimeline(); },
   "sig-s3c":   () => { sigShow("s3"); litTimeline(); },
   "sig-w2":    () => sigShow("w2"),
-  "sig-w3":    () => sigShow("w3")
+  "sig-w3":    () => sigShow("w3"),
+  "sig-w4":    () => sigShow("w4")
 };
 
 const stepObs = new IntersectionObserver((entries) => {
