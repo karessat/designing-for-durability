@@ -574,3 +574,8 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
   .rr .rt { font-size: 16px; }
   .jump { gap: 12px; }
 }
+
+
+/* ============ footnote strip between sections ============ */
+.footnote-strip { text-align: center; padding: 8px 24px 100px; }
+.footnote-strip .panelfoot { margin-top: 0; }
