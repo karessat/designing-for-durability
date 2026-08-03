@@ -147,7 +147,7 @@ document.querySelectorAll(".step").forEach((s) => stepObs.observe(s));
 window.addEventListener("resize", () => {
   const a = document.querySelector(".step.active");
   if (a && handlers[a.dataset.step]) handlers[a.dataset.step]();
-  else });
+});
 
 /* ================= STILE ================= */
 document.getElementById("scaleKey").innerHTML = HORIZONS.map((h) =>

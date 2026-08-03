@@ -98,9 +98,9 @@ a:hover { color: var(--ink); }
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
-.steps { position: relative; z-index: 3; pointer-events: none; }
+.steps { position: relative; z-index: 3; pointer-events: none; margin-top: -100svh; }
 .step {
-  min-height: 92svh;
+  min-height: 80svh;
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
 }
@@ -171,11 +171,11 @@ a:hover { color: var(--ink); }
 
 /* ============ statement panels ============ */
 .panel {
-  min-height: 88svh;
+  min-height: 76svh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 96px 24px;
+  padding: 72px 24px;
   position: relative;
   overflow: hidden;
 }
@@ -203,7 +203,7 @@ a:hover { color: var(--ink); }
 .panel .body strong { color: var(--ink); }
 
 /* ============ drivers ============ */
-#drivers { padding: 110px 24px 130px; max-width: 1080px; margin: 0 auto; }
+#drivers { padding: 76px 24px 88px; max-width: 1080px; margin: 0 auto; }
 #drivers header { text-align: center; margin-bottom: 56px; }
 #drivers h2 { font-family: var(--disp); font-size: clamp(26px, 3.6vw, 40px); font-weight: 600; margin-top: 14px; }
 .dgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
@@ -292,7 +292,7 @@ path.line.reveal.on { stroke-dashoffset: 0; }
 
 /* ============ provocations ============ */
 #provocations { border-top: 1px solid var(--hairline); }
-.prov { min-height: 92svh; }
+.prov { min-height: auto; padding: 72px 24px 76px; }
 .prov .pk { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; color: var(--accent); }
 .prov h2 { max-width: 940px; }
 .prov .body { max-width: 640px; text-align: left; }
@@ -309,7 +309,7 @@ path.line.reveal.on { stroke-dashoffset: 0; }
 .prov .pstat .srcline { margin-top: 8px; }
 
 /* ============ STILE ============ */
-#stile { padding: 120px 24px 100px; max-width: 900px; margin: 0 auto; border-top: 1px solid var(--hairline); }
+#stile { padding: 84px 24px 76px; max-width: 900px; margin: 0 auto; border-top: 1px solid var(--hairline); }
 #stile header { text-align: center; margin-bottom: 20px; }
 #stile h2 { font-family: var(--disp); font-size: clamp(26px, 3.6vw, 40px); font-weight: 600; margin-top: 14px; }
 #stile .intro { max-width: 640px; margin: 18px auto 10px; color: var(--ink-2); text-align: center; }
@@ -350,7 +350,7 @@ path.line.reveal.on { stroke-dashoffset: 0; }
 
 /* ============ close + sources ============ */
 #close { border-top: 1px solid var(--hairline); }
-#sources { padding: 90px 24px 60px; max-width: 760px; margin: 0 auto; border-top: 1px solid var(--hairline); }
+#sources { padding: 70px 24px 50px; max-width: 760px; margin: 0 auto; border-top: 1px solid var(--hairline); }
 #sources h2 { font-family: var(--disp); font-size: 26px; font-weight: 600; margin-bottom: 8px; }
 #sources .note { color: var(--ink-2); font-size: 15px; margin: 14px 0 26px; }
 #sources ol { margin-left: 20px; }
@@ -559,7 +559,7 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 
 /* ============ footnote strip between sections ============ */
-.footnote-strip { text-align: center; padding: 8px 24px 100px; }
+.footnote-strip { text-align: center; padding: 8px 24px 60px; }
 .footnote-strip .panelfoot { margin-top: 0; }
 
 
@@ -581,16 +581,16 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
   .step.wide .card { margin-right: 0; max-width: min(760px, 84%); }
 }
 /* the signals section is now plain cards, so its steps need no viewport height */
-#signals .step { min-height: auto; padding: 30px 24px; }
+#signals .step { min-height: auto; padding: 20px 24px; }
 #signals .step .card { opacity: 1; }
 #signals .step .card p + p { margin-top: 14px; }
-#signals .steps { padding: 20px 0 60px; }
+#signals .steps { margin-top: 0; padding: 8px 0 40px; }
 
 
 /* ============ panels size to their content ============ */
 /* .panel is locked to 88svh, which leaves dead space under short sections. */
-#shift, #close { min-height: auto; padding: 104px 24px 96px; }
-.panel.compact { min-height: auto; padding: 88px 24px; }
+#shift, #close { min-height: auto; padding: 72px 24px 64px; }
+.panel.compact { min-height: auto; padding: 60px 24px; }
 #shift .watermark, #close .watermark { width: min(70vw, 520px); height: min(70vw, 520px); }
 
 
