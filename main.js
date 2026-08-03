@@ -149,41 +149,6 @@ window.addEventListener("resize", () => {
   if (a && handlers[a.dataset.step]) handlers[a.dataset.step]();
 });
 
-/* ================= STILE ================= */
-document.getElementById("scaleKey").innerHTML = HORIZONS.map((h) =>
-  `<span class="sk"><span class="n">${h.n} — ${h.name.toUpperCase()}</span><span class="g">${h.gloss}</span></span>`
-).join("");
-
-const stileBox = document.getElementById("stileRows");
-STILE.forEach((s) => {
-  const hz = horizonFor(s.score);
-  const row = document.createElement("div");
-  row.className = "stilerow";
-  row.setAttribute("tabindex", "0");
-  row.innerHTML =
-    `<div class="top"><span class="k">${s.key}</span><span class="n">${s.name}<span class="nsub">${s.short}</span></span>` +
-    `<span class="hchip h${hz}">${HORIZONS[hz - 1].name}</span>` +
-    `<span class="sc num">${s.score.toFixed(1)}</span></div>` +
-    `<div class="track"><div class="dot" style="left:${((s.score - 1) / 2) * 100}%"></div></div>` +
-    `<div class="rationale">${s.rationale}<div class="watch"><b>WHAT TO WATCH</b> ${s.watch}</div></div>` +
-    `<div class="hint">CLICK TO OPEN</div>`;
-  const toggle = () => {
-    row.classList.toggle("open");
-    row.querySelector(".hint").textContent = row.classList.contains("open") ? "CLICK TO CLOSE" : "CLICK TO OPEN";
-  };
-  row.addEventListener("click", toggle);
-  row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
-  stileBox.appendChild(row);
-});
-const stileObs = new IntersectionObserver((entries) => {
-  entries.forEach((en) => {
-    if (!en.isIntersecting) return;
-    [...stileBox.children].forEach((r, i) => setTimeout(() => r.classList.add("shown"), reduceMotion ? 0 : i * 160));
-    stileObs.disconnect();
-  });
-}, { threshold: 0.3 });
-stileObs.observe(stileBox);
-
 /* ================= PROGRESS NAV ================= */
 const navLinks = [...document.querySelectorAll("#prognav a")];
 const navObs = new IntersectionObserver((entries) => {

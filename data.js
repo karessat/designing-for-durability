@@ -9,29 +9,3 @@
 
 const REAL_APPLIANCES = [[1998,100.0],[1999,96.1],[2000,94.2],[2001,91.3],[2002,89.2],[2003,87.2],[2004,82.5],[2005,82.1],[2006,80.4],[2007,81.0],[2008,79.0],[2009,78.4],[2010,73.2],[2011,69.8],[2012,74.2],[2013,70.8],[2014,64.6],[2015,61.0],[2016,56.3],[2017,53.1],[2018,55.3],[2019,53.3],[2020,53.8],[2021,61.3],[2022,59.2],[2023,52.9],[2024,48.6],[2025,48.9],[2026,49.2]];
 const REAL_REPAIR = [[1998,100.0],[1999,103.0],[2000,103.8],[2001,108.0],[2002,111.3],[2003,114.0],[2004,118.2],[2005,120.8],[2006,122.9],[2007,124.5],[2008,126.4],[2009,131.4],[2010,133.4],[2012,138.6],[2013,142.0],[2014,143.7],[2015,148.7],[2016,151.0],[2017,156.3],[2018,161.7],[2019,168.3],[2020,167.0],[2023,185.3]];
-
-/* STILE, August 2026. Hines & McBride. Scored 1-3 and read on the Three Horizons. */
-const STILE = [
-  { key:"S", name:"Do people want it?", short:"Social acceptance", score:1.5,
-    rationale:"They are already behaving that way. In McKinsey's survey of more than 9,000 appliance buyers across Europe, Japan and the U.S., the global share who wait ten years or more before replacing rose from 35% to 39% in a single year, and buyers now rank durability, efficiency and price above smart features. Cars say the same thing: the average American car is 12.8 years old, a record for the eighth year running. What is still missing is proof that people will pay extra up front for a machine that lasts.",
-    watch:"A U.S. figure for how long people keep appliances, published regularly. And any brand that charges more for a durable machine and reports what happened to sales." },
-  { key:"T", name:"Can it be built?", short:"Technological capability", score:1.5,
-    rationale:"Yes, and it already is. Framework sells laptops whose main board you can swap. Prusa sells printers you build yourself and upgrade later. Groupe SEB keeps parts for fifteen years. Speed Queen tests washers to twenty-five years of use. Nobody has to invent anything.",
-    watch:"A big manufacturer shipping a modular machine at a normal price. That would move this to 1." },
-  { key:"I", name:"Is there a system to support it?", short:"Infrastructure", score:2.5,
-    rationale:"No. Fixing appliances in the U.S. is a $7.0B business split among roughly 37,800 firms, none holding more than 5% of it. There is no national repair network a manufacturer can plug into, and no way to recover an old machine from a customer. This is the thing that is actually missing.",
-    watch:"Anyone building or buying a national repair and parts network. Also whether delivery crews start bringing old machines back instead of scrapping them." },
-  { key:"L", name:"Is it allowed and encouraged?", short:"Legal clearance", score:1.5,
-    rationale:"Yes, and increasingly required. Eight states have repair laws in force, Texas makes nine in September, and that covers about 35% of Americans. Europe has set dates through 2030 for products to be durable and repairable. France prints a durability score next to the price. The FTC has taken a manufacturer to court over locking up repair tools and won terms.",
-    watch:"Whether the Deere order is made final, the 2027 Copyright Office review, and each new EU date as it lands." },
-  { key:"E", name:"Is anyone actually doing it?", short:"Entrepreneurial zeal", score:2.5,
-    rationale:"Barely. The companies doing it are small or expensive: Speed Queen, Miele, Framework and Prusa. No big American appliance brand has claimed durability as its position, and the industry's own trade group has argued against repair laws. That is why the space is still empty.",
-    watch:"Any mass-market brand advertising on durability or repairability. Or the trade group changing its mind." }
-];
-
-const HORIZONS = [
-  { n:1, name:"Already here", gloss:"this is normal today" },
-  { n:2, name:"On its way",   gloss:"moving, not settled" },
-  { n:3, name:"Not yet",      gloss:"still missing" }
-];
-function horizonFor(score){ return score < 1.75 ? 1 : score < 2.25 ? 2 : 3; }
