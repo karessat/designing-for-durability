@@ -221,15 +221,6 @@ const realChart = lineChart(document.getElementById("realChart"), {
   xTicks: [1998, 2005, 2012, 2019, 2026], tipFmt: (v) => v.toFixed(0)
 });
 
-const vehChart = lineChart(document.getElementById("vehChart"), {
-  title: "Average age of an American car",
-  sub: "years · DOT/BTS Table 1-26; S&P Global Mobility from 2022",
-  series: [{ key: "age", label: "Average age", color: "var(--accent)", data: VEHICLE_AGE }],
-  y0: 8, yTicks: [9, 10, 11, 12, 13], xTicks: [2002, 2010, 2016, 2022, 2025],
-  yFmt: (t) => t + "y", tipFmt: (v) => v + " years",
-  annotations: [{ key: "rec", x: 2025, y: 12.8, text: "12.8 years — a record, 8 years running", anchor: "end" }]
-});
-
 /* stage panel switching */
 const eqPanels = [...document.querySelectorAll(".eq-panel")];
 function eqShow(w) { eqPanels.forEach((p) => p.classList.toggle("on", p.dataset.eq === w)); }
@@ -255,7 +246,6 @@ const handlers = {
   "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
 
   "sig-s1":    () => sigShow(null),
-  "sig-s1b":   () => { sigShow("s1b"); vehChart.show("age"); vehChart.annotate("rec"); },
   "sig-s2":    () => { sigShow("s2"); popSet(R2R.none); },
   "sig-s2a":   () => { sigShow("s2"); popSet(R2R.five); },
   "sig-s2b2":  () => { sigShow("s2"); popSet(R2R.now); },
