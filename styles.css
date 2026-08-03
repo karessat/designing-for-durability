@@ -579,3 +579,15 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 /* ============ footnote strip between sections ============ */
 .footnote-strip { text-align: center; padding: 8px 24px 100px; }
 .footnote-strip .panelfoot { margin-top: 0; }
+
+
+/* ============ caveat block inside a driver card ============ */
+.driver .stat.caveat {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+  color: var(--ink-2); font-size: 14px;
+}
+.driver .stat.caveat b {
+  display: block; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: 0.14em; color: var(--accent); font-weight: 500; margin-bottom: 5px;
+}
