@@ -133,6 +133,10 @@ const handlers = {
 
 };
 
+/* A step activates when it crosses a narrow band across the middle of the screen.
+   A percentage threshold would depend on how tall the window is: on a large or
+   maximised window two steps can each be half visible at once, so the wrong one
+   wins. A middle band is the same size relative to the viewport at any height. */
 const stepObs = new IntersectionObserver((entries) => {
   entries.forEach((en) => {
     if (!en.isIntersecting) return;
@@ -141,12 +145,31 @@ const stepObs = new IntersectionObserver((entries) => {
     const h = handlers[en.target.dataset.step];
     if (h) h();
   });
-}, { threshold: 0.5 });
+}, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
 document.querySelectorAll(".step").forEach((s) => stepObs.observe(s));
 
+/* If the page loads already scrolled past a step, or the window is resized so the
+   band lands between steps, make sure the chart still matches what is on screen. */
+function syncToViewport() {
+  const mid = window.innerHeight / 2;
+  let best = null, bestDist = Infinity;
+  document.querySelectorAll(".step").forEach((s) => {
+    const r = s.getBoundingClientRect();
+    const d = Math.abs((r.top + r.bottom) / 2 - mid);
+    if (r.bottom > 0 && r.top < window.innerHeight && d < bestDist) { bestDist = d; best = s; }
+  });
+  if (!best) return;
+  document.querySelectorAll(".step.active").forEach((s) => s !== best && s.classList.remove("active"));
+  best.classList.add("active");
+  const h = handlers[best.dataset.step];
+  if (h) h();
+}
+window.addEventListener("load", syncToViewport);
+
+let resizeT;
 window.addEventListener("resize", () => {
-  const a = document.querySelector(".step.active");
-  if (a && handlers[a.dataset.step]) handlers[a.dataset.step]();
+  clearTimeout(resizeT);
+  resizeT = setTimeout(syncToViewport, 120);
 });
 
 /* ================= PROGRESS NAV ================= */
