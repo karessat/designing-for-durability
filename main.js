@@ -268,7 +268,7 @@ const handlers = {
   "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
   "eq-ppi":  () => { eqShow("ppi"); ppiChart.show("steel"); ppiChart.show("appl"); },
 
-  "sig-s1":    () => sigShow("s1"),
+  "sig-s1":    () => sigShow(null),
   "sig-s1b":   () => { sigShow("s1b"); vehChart.show("age"); vehChart.annotate("rec"); },
   "sig-s2":    () => { sigShow("s2"); popSet(R2R.none); },
   "sig-s2a":   () => { sigShow("s2"); popSet(R2R.five); },
