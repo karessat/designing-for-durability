@@ -394,23 +394,37 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 
 /* ============ two-column scrolly on wide screens ============ */
-@media (min-width: 1000px) {
-  #equilibrium .eq-panel { justify-content: flex-start; padding-left: 10vw; }
-  #equilibrium .chartbox { width: min(52vw, 740px); }
-  #equilibrium .step { justify-content: flex-end; }
-  #equilibrium .step .card { margin-right: 5vw; max-width: 430px; }
+/* Two columns from 760px up: visual on the left, text on the right, never overlapping. */
+@media (min-width: 760px) {
+  .popreadout { left: 0; right: 46%; }
+  #equilibrium .eq-panel,
+  #signals .sigstage-content { justify-content: flex-start; padding-left: 4vw; }
+  #equilibrium .chartbox { width: 52%; }
+  #signals .sigvisual { width: 55%; padding: 0; }
+  #signals .sigvisual .chartbox,
+  #signals .sigvisual .covbars,
+  #signals .sigvisual .timeline,
+  #signals .sigvisual .rulebox { width: 100%; }
+  .bignum-panel { max-width: 100%; }
 
-  #signals .sigstage-content { justify-content: flex-start; }
-  #signals .sigvisual { width: 54vw; padding-left: 10vw; }
-  #signals .sigvisual .covbars, #signals .sigvisual .chartbox { width: min(48vw, 700px); }
+  #equilibrium .step,
   #signals .step { justify-content: flex-end; }
+  #equilibrium .step .card,
+  #signals .step .card { margin-right: 4vw; max-width: min(40%, 460px); }
+}
+/* Wider screens: give both columns a little more breathing room. */
+@media (min-width: 1180px) {
+  #equilibrium .eq-panel,
+  #signals .sigstage-content { padding-left: 7vw; }
+  #equilibrium .chartbox { width: min(50%, 740px); }
+  #signals .sigvisual { width: 52%; }
+  #equilibrium .step .card,
   #signals .step .card { margin-right: 5vw; max-width: 460px; }
-  .bignum-panel { max-width: 48vw; }
 }
 
 
 /* ============ narrow screens: visual top, card bottom ============ */
-@media (max-width: 999px) {
+@media (max-width: 759px) {
   #equilibrium .stage, #signals .stage { align-items: flex-start; padding-top: 3svh; }
   #equilibrium .eq-panel { align-items: flex-start; padding-top: 3svh; }
   #equilibrium .step, #signals .step { align-items: flex-end; padding-bottom: 4svh; }
@@ -512,7 +526,7 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 .cadtrigger li { font-size: 14px; color: var(--ink-2); margin: 7px 0; line-height: 1.45; }
 .cadfoot { font-size: 14.5px; color: var(--muted); margin-top: 4px; }
 
-@media (max-width: 999px) {
+@media (max-width: 759px) {
   .popreadout { bottom: auto; top: 8px; }
   .popreadout .pv { font-size: 30px; }
   .popreadout .pn { display: none; }
@@ -569,7 +583,7 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 .stilerow .top { align-items: flex-start; }
 .hchip.h3 { border-color: var(--baseline); color: var(--muted); }
 
-@media (max-width: 999px) {
+@media (max-width: 759px) {
   .rulebox { width: 92%; }
   .rr .rt { font-size: 16px; }
   .jump { gap: 12px; }

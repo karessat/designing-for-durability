@@ -11,7 +11,7 @@ Follows the case study brief: shift → drivers → signals → application → 
 1. **The shift** — the proposition, stated first
 2. **Why it didn't happen before** — BLS CPI, 1998–2023: appliance prices flat while repair costs tripled, which made designing for replacement correct. Then the first crack: vehicle holding periods rising anyway
 3. **Five drivers** — software-defined products, right to repair, circular design and sustainability law, tariffs and geopolitical instability, relational retail and trust. Mapped to PESTLE
-4. **Six signals** — three strong (right-to-repair coverage 0 → 35%, the FTC/Deere consent order, EU ecodesign law and the DMCA commercial-equipment exemption), three weak (Bundles, Framework and Prusa, Apple Self Service Repair). Each weak signal states why it is weak
+4. **Six signals** — three strong (right-to-repair coverage 0 → 35%, the FTC/Deere consent order, EU ecodesign law and the DMCA commercial-equipment exemption), two weak (Framework and Prusa, Apple Self Service Repair). Each weak signal states why it is weak
 5. **Four provocations** — applied to Whirlpool, with the evidence gaps named rather than papered over
 6. **STILE** — scored on the Three Horizons, with per-element watch indicators and a six-month rescoring cadence
 7. **Method & sources** — 23 citations, source-quality grading, data tables

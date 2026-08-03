@@ -83,17 +83,20 @@ popInner.addEventListener("click", (e) => {
 function layoutGrid() {
   const W = popInner.clientWidth, H = popInner.clientHeight;
   const cols = 10;
-  const narrow = W < 1000;
-  const side = narrow ? 26 : 80;
-  const top = narrow ? 104 : 80;
-  const bottom = narrow ? 26 : 150;
-  const size = narrow ? 34 : 52;
-  const cw = (W - side * 2) / cols, ch = (H - top - bottom) / 10;
+  const twoCol = window.innerWidth >= 760;   // matches the CSS breakpoint
+  // In two-column mode keep the grid inside the left column so the text never covers it.
+  const left = twoCol ? W * 0.04 : 26;
+  const usable = twoCol ? W * 0.50 : W - 52;
+  const top = twoCol ? 70 : 104;
+  const bottom = twoCol ? 150 : 26;
+  const size = twoCol ? (W < 1100 ? 40 : 52) : 34;
+  const cw = usable / cols, ch = (H - top - bottom) / 10;
   units.forEach((u) => {
     const pos = gridOrder.indexOf(u.id);
-    u.gx = side + (pos % cols) * cw + cw / 2 - size / 2 + u.jx;
+    u.gx = left + (pos % cols) * cw + cw / 2 - size / 2 + u.jx;
     u.gy = top + Math.floor(pos / cols) * ch + ch / 2 - size / 2 + u.jy;
   });
+  units.forEach((u) => { u.el.style.width = size + "px"; u.el.style.height = size + "px"; });
 }
 
 function popSet(stage) {
@@ -276,7 +279,6 @@ const handlers = {
   "sig-s3":    () => { sigShow("s3"); litTimeline(); },
   "sig-s3b":   () => { sigShow("s3"); litTimeline(); },
   "sig-s3c":   () => { sigShow("s3"); litTimeline(); },
-  "sig-w1":    () => sigShow("w1"),
   "sig-w2":    () => sigShow("w2"),
   "sig-w3":    () => sigShow("w3")
 };

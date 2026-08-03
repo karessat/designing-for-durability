@@ -55,7 +55,7 @@ const STILE = [
     rationale:"Yes, and increasingly required. Eight states have repair laws in force, Texas makes nine in September, and that covers about 35% of Americans. Europe has set dates through 2030 for products to be durable and repairable. France prints a durability score next to the price. The FTC has taken a manufacturer to court over locking up repair tools and won terms.",
     watch:"Whether the Deere order is made final, the 2027 Copyright Office review, and each new EU date as it lands." },
   { key:"E", name:"Is anyone actually doing it?", short:"Entrepreneurial zeal", score:2.5,
-    rationale:"Barely. The companies doing it are small or expensive: Speed Queen, Miele, Framework, Prusa, Bundles. No big American appliance brand has claimed durability as its position, and the industry's own trade group has argued against repair laws. That is why the space is still empty.",
+    rationale:"Barely. The companies doing it are small or expensive: Speed Queen, Miele, Framework and Prusa. No big American appliance brand has claimed durability as its position, and the industry's own trade group has argued against repair laws. That is why the space is still empty.",
     watch:"Any mass-market brand advertising on durability or repairability. Or the trade group changing its mind." }
 ];
 
