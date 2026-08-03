@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260803b">
+<link rel="stylesheet" href="styles.css?v=20260803c">
 </head>
 <body>
 
@@ -50,7 +50,6 @@
 <section id="equilibrium" class="scrolly" aria-label="Why it did not happen before">
   <div class="stage" id="eqStage">
     <div class="eq-panel on" data-eq="real"><div class="chartbox" id="realChart"></div></div>
-    <div class="eq-panel" data-eq="ppi"><div class="chartbox" id="ppiChart"></div></div>
   </div>
   <div class="steps" data-scene="eq">
     <div class="step" data-step="eq-real"><div class="card">
@@ -65,19 +64,16 @@
     <div class="step" data-step="eq-why"><div class="card">
       <div class="aside"><b>TWO THINGS TO KNOW</b>BLS marks appliance prices down when machines gain features. It does not do that to repair prices. So part of the gap between these two lines comes from how they are measured, not from what happened to households. And BLS has published the repair index only a handful of times since July 2024, after it cut part of its price collection, so 2023 is the last full year.</div>
     </div></div>
-    <div class="step" data-step="eq-ppi"><div class="card">
-      <p class="cardkicker">What it costs to build one</p>
-      <p>Steel is roughly half the weight of a washing machine. Since 1998 American steel has gone up <strong class="num">199%</strong>. What shoppers pay for a major appliance has gone up <strong class="num">1%</strong>.</p>
-      <p>Manufacturers closed that gap by building in cheaper countries, automating, and taking less per machine. <strong>Since June 2025 the first of those does less work: the 50% steel tariff is charged on the steel inside an imported appliance too.</strong></p>
-      <div class="aside"><b>HOW TO READ THIS</b>Both lines show how much each has changed since 1998, not what either costs. A tonne of steel and a washing machine are not comparable prices. Steel is also one input among many, and much of this industry's production moved abroad over the period.</div>
-      <p class="srcline">BLS iron and steel PPI (WPU101) against major appliances CPI (CUUR0000SS30021), each as percent change from its own 1998 level.</p>
-    </div></div>
   </div>
 </section>
 
-<div class="footnote-strip">
-  <p class="panelfoot">How ready this is scored at the end, using STILE.</p>
-</div>
+<!-- ================= TRANSITION ================= -->
+<section id="transition" class="panel compact">
+  <h2>But the era of limited functional life appliances may be coming to an end.</h2>
+  <div class="body">
+    <p>Several forces are converging to change the economics.</p>
+  </div>
+</section>
 
 <!-- ================= STEP 2b · DRIVERS ================= -->
 <section id="drivers">
@@ -129,6 +125,14 @@
     </article>
     <article class="driver">
       <span class="dk">ECONOMIC</span>
+      <span class="cut" style="background-image:url(assets/washer2_w.png)"></span>
+      <h3>Building one costs the manufacturer more</h3>
+      <p>Steel is roughly half the weight of a washing machine. Since 1998 the price of American steel has risen <strong>199%</strong>. Over the same period, what shoppers pay for a major appliance has risen <strong>1%</strong>. Manufacturers absorbed the difference by building in cheaper countries, automating, and taking less margin on each machine.</p>
+      <div class="stat">Since June 2025 the first of those does less work. The 50% steel tariff applies to the steel inside an imported appliance, so moving production abroad no longer avoids the cost.
+        <p class="srcline">BLS iron and steel PPI against major appliances CPI, each measured as change from its own 1998 level. A raw material and a finished machine have no comparable price, so only the change can be compared. Steel is one input among many.</p></div>
+    </article>
+    <article class="driver">
+      <span class="dk">ECONOMIC</span>
       <span class="cut" style="background-image:url(assets/iron_w.png)"></span>
       <h3>Tariffs put up the price of a new machine</h3>
       <p>Since 23 June 2025, big household appliances count as steel products for tariff purposes. Fridge-freezers, washers, dryers, dishwashers, freezers, stoves, ranges and ovens all carry a 50% tariff on the steel inside them. A washing machine holds a lot of steel.</p>
@@ -139,6 +143,10 @@
     </article>
   </div>
 </section>
+
+<div class="footnote-strip">
+  <p class="panelfoot">Readiness is scored at the end, using STILE.</p>
+</div>
 
 <!-- ================= STEP 3 · SIGNALS ================= -->
 <section id="signals-intro" class="panel compact">
@@ -433,10 +441,6 @@
     <summary>DATA TABLE · appliance and repair prices after inflation, 1998 = 100</summary>
     <div id="realTable"></div>
   </details>
-  <details>
-    <summary>DATA TABLE · percent change since 1998: appliance prices and steel</summary>
-    <div id="ppiTable"></div>
-  </details>
 </section>
 
 <footer>
@@ -447,7 +451,7 @@
 <div id="popTip" role="tooltip"></div>
 <div class="chart-tip" id="chartTip" role="tooltip"></div>
 
-<script src="data.js?v=20260803b"></script>
-<script src="main.js?v=20260803b"></script>
+<script src="data.js?v=20260803c"></script>
+<script src="main.js?v=20260803c"></script>
 </body>
 </html>
