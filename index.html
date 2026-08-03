@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260802x">
+<link rel="stylesheet" href="styles.css?v=20260802y">
 </head>
 <body>
 
@@ -60,10 +60,9 @@
       <p class="srcline">BLS major appliances CPI, divided by all-items CPI. 1998 = 100 → 49 in June 2026.</p>
     </div></div>
     <div class="step" data-step="eq-rep"><div class="card">
-      <p>Over the same period, what households paid for repairs rose <strong>85%</strong> after inflation.</p>
-      <p>Put the two together. Whatever share of a new machine a repair cost a household in 1998, by 2023 it cost <strong class="num">3.5 times</strong> that share. That share is what the repair-or-replace rule runs on.</p>
-      <div class="aside"><b>WHAT THIS INDEX COVERS</b>BLS publishes no index for appliance repair on its own. This one covers repair of household items, which holds three things: appliance repair, furniture reupholstery, and inside home work such as plumbing, electrical and painting. Appliance repair is one of the three.</div>
-      <p class="srcline">BLS repair of household items CPI (CUUR0000SEHP04), divided by all-items CPI. 1998 = 100 → 185 in 2023. The 3.5 figure is the ratio between the two lines, which is the same before and after inflation, because both are divided by the same number.</p>
+      <p>Over the same period, households paid <strong>85% more</strong> for repairs, after adjusting for inflation. Taken together, these changes have incentivized consumers to buy new appliances where they might previously have opted for a repair.</p>
+      <div class="aside"><b>NOTE</b>This information reflects BLS statistics on repair of household items, including appliances.</div>
+      <p class="srcline">BLS repair of household items CPI, divided by all-items CPI. 1998 = 100 → 185 in 2023.</p>
     </div></div>
     <div class="step" data-step="eq-why"><div class="card">
       <p>So the rule pointed to <em>buy new</em>, year after year. Building a machine to last was spending money on something no customer was rewarded for choosing. <strong>Designing for the bin was the correct business decision.</strong></p>
@@ -406,7 +405,7 @@
   <h2>How this was put together</h2>
   <p class="note">Government, university and UN figures are used as they are. Surveys are named, with who ran them and how many people they asked. Anything from a company with something to sell is labelled where it appears. Two things are said plainly rather than smoothed over: the U.S. repair price index has barely been published since July 2024, and the 100 households in the grid are illustrations — the percentages are real, the households are not.</p>
   <ol>
-    <li>U.S. Bureau of Labor Statistics, via the Public Data API, retrieved August 2026: major appliances CPI (CUUR0000SS30021), household repair CPI (CUUR0000SEHP04), all-items CPI (CUUR0000SA0), iron and steel PPI (WPU101). Real figures are the price index divided by all-items CPI. The steel comparison is shown as percent change from 1998 for each series separately, because a raw material and a finished machine have no comparable price level. The repair index has very few observations after mid-2024, following BLS collection cuts announced in 2025.</li>
+    <li>U.S. Bureau of Labor Statistics, via the Public Data API, retrieved August 2026: major appliances CPI (CUUR0000SS30021), household repair CPI, all-items CPI (CUUR0000SA0), iron and steel PPI (WPU101). Real figures are the price index divided by all-items CPI. The steel comparison is shown as percent change from 1998 for each series separately, because a raw material and a finished machine have no comparable price level. The repair index has very few observations after mid-2024, following BLS collection cuts announced in 2025.</li>
     <li>Proclamation 10896 steel derivative list, adding large household appliances at a 50% tariff on steel content, effective 23 June 2025.</li>
     <li>Flaaen, Hortaçsu &amp; Tintelnot, "The Production Relocation and Price Effects of US Trade Policy: The Case of Washing Machines," <em>American Economic Review</em> 110(7), 2020.</li>
     <li>McKinsey Global State of White Goods Survey, fielded Q4 2024, more than 9,000 appliance buyers across Europe, Japan and the United States, screened to people who bought a major appliance in the previous 24 months. Ten-year-plus replacement share 35% (2023) → 39% (2024). A consultancy, and stated behaviour.</li>
@@ -451,7 +450,7 @@
 <div id="popTip" role="tooltip"></div>
 <div class="chart-tip" id="chartTip" role="tooltip"></div>
 
-<script src="data.js?v=20260802x"></script>
-<script src="main.js?v=20260802x"></script>
+<script src="data.js?v=20260802y"></script>
+<script src="main.js?v=20260802y"></script>
 </body>
 </html>
