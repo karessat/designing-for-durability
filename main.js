@@ -263,7 +263,6 @@ function litTimeline() {
 
 /* ================= STEP HANDLERS ================= */
 const handlers = {
-  "eq-rule": () => eqShow("rule"),
   "eq-real": () => { eqShow("real"); realChart.show("appl"); },
   "eq-rep":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
   "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
