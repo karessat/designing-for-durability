@@ -139,6 +139,8 @@ a:hover { color: var(--ink); }
 }
 .unit.is-hidden { opacity: 0; pointer-events: none; }
 .unit.is-pulse { animation: pulse 1.6s ease-in-out infinite; }
+.unit.is-cov { animation: covIn 0.5s ease both; }
+@keyframes covIn { from { transform: scale(0.82); } to { transform: scale(1); } }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
 #popTip {
@@ -156,12 +158,16 @@ a:hover { color: var(--ink); }
 #popTip.on { opacity: 1; }
 #popTip .t { color: var(--ink); }
 
-.stagenote {
-  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-  font-family: var(--mono); font-size: 10.5px; color: var(--muted);
-  letter-spacing: 0.04em; text-align: center; width: 100%; padding: 0 20px;
-  z-index: 2;
+.popwrap { position: relative; width: 100%; height: 100%; }
+.popwrap .inner { position: absolute; inset: 0; }
+.popreadout {
+  position: absolute; left: 0; right: 0; bottom: 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  text-align: center; padding: 0 20px; z-index: 2; pointer-events: none;
 }
+.popreadout .pv { font-family: var(--disp); font-size: clamp(30px,4.4vw,46px); font-weight: 600; color: var(--accent); line-height: 1; }
+.popreadout .pl2 { font-family: var(--mono); font-size: 12px; color: var(--ink-2); letter-spacing: 0.08em; margin-top: 6px; }
+.popreadout .pn { font-family: var(--mono); font-size: 10.5px; color: var(--muted); max-width: 460px; line-height: 1.5; }
 
 /* ============ statement panels ============ */
 .panel {
@@ -389,10 +395,10 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 /* ============ two-column scrolly on wide screens ============ */
 @media (min-width: 1000px) {
-  #economics .stage { justify-content: flex-start; padding-left: 7vw; }
-  #economics .chartbox { width: min(52vw, 740px); }
-  #economics .step { justify-content: flex-end; }
-  #economics .step .card { margin-right: 5vw; max-width: 430px; }
+  #equilibrium .eq-panel { justify-content: flex-start; padding-left: 7vw; }
+  #equilibrium .chartbox { width: min(52vw, 740px); }
+  #equilibrium .step { justify-content: flex-end; }
+  #equilibrium .step .card { margin-right: 5vw; max-width: 430px; }
 
   #signals .sigstage-content { justify-content: flex-start; }
   #signals .sigvisual { width: 54vw; padding-left: 7vw; }
@@ -405,8 +411,9 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 /* ============ narrow screens: visual top, card bottom ============ */
 @media (max-width: 999px) {
-  #economics .stage, #signals .stage { align-items: flex-start; padding-top: 3svh; }
-  #economics .step, #signals .step { align-items: flex-end; padding-bottom: 4svh; }
+  #equilibrium .stage, #signals .stage { align-items: flex-start; padding-top: 3svh; }
+  #equilibrium .eq-panel { align-items: flex-start; padding-top: 3svh; }
+  #equilibrium .step, #signals .step { align-items: flex-end; padding-bottom: 4svh; }
   .sigstage-content { align-items: flex-start !important; padding-top: 3svh; }
   .sigvisual .tag { font-size: 42px; margin-bottom: -8px; }
   .sigvisual .cut { width: 44vw; height: 44vw; }
@@ -415,4 +422,103 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
   .covrow .track { height: 18px; }
   .bignum-panel .row { gap: 18px; margin-top: 18px; }
   .step .card { max-width: 500px; }
+}
+
+
+/* ============ additions for the restructured briefing ============ */
+.panel.compact { min-height: 52svh; padding: 70px 24px; }
+.panelfoot {
+  position: relative; margin-top: 30px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+  color: var(--muted); text-transform: uppercase;
+}
+.cardkicker {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+}
+#drivers .intro { max-width: 560px; margin: 14px auto 0; color: var(--ink-2); font-size: 15.5px; }
+
+/* neutral aside — same shape as .whyweak, grey rather than accent */
+.aside {
+  margin-top: 14px; padding: 12px 14px;
+  border-left: 2px solid var(--baseline);
+  background: rgba(255,255,255,0.035);
+  font-size: 15px; color: var(--ink-2);
+}
+.aside b {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted);
+  display: block; margin-bottom: 4px; font-weight: 500;
+}
+
+/* equilibrium: two charts sharing one sticky stage */
+.eq-panel {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
+}
+.eq-panel.on { opacity: 1; pointer-events: auto; }
+
+/* ESPR timeline */
+.timeline { width: min(90%, 620px); text-align: left; }
+.timeline h4 {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+  color: var(--muted); text-transform: uppercase; margin-bottom: 20px;
+}
+.trow { display: grid; grid-template-columns: 62px 1fr; gap: 16px; padding: 11px 0; position: relative; opacity: 0.34; transition: opacity 0.5s ease; }
+.trow.lit { opacity: 1; }
+.trow::before {
+  content: ""; position: absolute; left: 71px; top: 0; bottom: 0; width: 1px; background: var(--hairline);
+}
+.trow:first-child::before { top: 50%; }
+.trow:last-child::before { bottom: 50%; }
+.trow .ty { font-family: var(--disp); font-weight: 600; font-size: 17px; color: var(--accent); text-align: right; }
+.trow .tb { padding-left: 18px; position: relative; }
+.trow .tb::before {
+  content: ""; position: absolute; left: -7px; top: 8px; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--page); border: 2px solid var(--baseline);
+}
+.trow.lit .tb::before { border-color: var(--accent); background: var(--accent); }
+.trow .tl { font-size: 15.5px; color: var(--ink); line-height: 1.35; }
+.trow .td { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+/* STILE: horizon chip + watch indicator */
+.scalekey { align-items: flex-start; gap: 12px; }
+.scalekey .sk { flex: 1; }
+.scalekey .sk .n { color: var(--ink-2); display: block; }
+.scalekey .sk .g { color: var(--muted); text-transform: none; letter-spacing: 0; font-size: 10.5px; display: block; margin-top: 2px; }
+.hchip {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  padding: 2px 7px; border-radius: 3px; border: 1px solid var(--baseline); color: var(--muted);
+  white-space: nowrap;
+}
+.hchip.h1 { border-color: var(--accent); color: var(--accent); }
+.hchip.h2 { border-color: var(--ink-2); color: var(--ink-2); }
+.stilerow .watch {
+  margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--hairline);
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted); line-height: 1.55;
+}
+.stilerow .watch b { color: var(--ink-2); font-weight: 500; letter-spacing: 0.1em; }
+
+/* rescoring cadence */
+.cadence { max-width: 640px; margin: 44px auto 0; padding: 24px; border: 1px solid var(--hairline); border-radius: 6px; background: var(--surface); }
+.cadence h3 { font-family: var(--disp); font-size: 19px; font-weight: 600; margin-bottom: 10px; }
+.cadence > p { color: var(--ink-2); font-size: 15.5px; }
+.cadgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0 14px; }
+.cadnext, .cadtrigger { border: 1px solid var(--hairline); border-radius: 5px; padding: 16px 18px; background: var(--page); }
+.cn-l { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; color: var(--muted); display: block; }
+.cn-v { font-family: var(--disp); font-size: 25px; font-weight: 600; display: block; margin-top: 6px; }
+.cn-n { font-family: var(--mono); font-size: 11px; color: var(--muted); display: block; margin-top: 4px; }
+.cadtrigger ul { margin: 10px 0 0 16px; }
+.cadtrigger li { font-size: 14px; color: var(--ink-2); margin: 7px 0; line-height: 1.45; }
+.cadfoot { font-size: 14.5px; color: var(--muted); margin-top: 4px; }
+
+@media (max-width: 999px) {
+  .popreadout { bottom: auto; top: 8px; }
+  .popreadout .pv { font-size: 30px; }
+  .popreadout .pn { display: none; }
+  .timeline { width: 92%; }
+  .trow { grid-template-columns: 48px 1fr; gap: 10px; }
+  .trow::before { left: 57px; }
+  .trow .td { display: none; }
+  .scalekey { flex-direction: column; gap: 4px; }
 }
