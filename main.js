@@ -211,7 +211,7 @@ function lineChart(container, opts) {
 }
 
 const realChart = lineChart(document.getElementById("realChart"), {
-  title: "After inflation: what a machine costs, and what fixing one costs",
+  title: "The economics of appliance repair",
   sub: "1998 = 100 · BLS price indexes divided by all-items CPI · gaps are years BLS did not publish",
   series: [
     { key: "appl", label: "Buying a machine", color: "var(--blue)", data: REAL_APPLIANCES },
