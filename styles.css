@@ -601,3 +601,26 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 #shift, #close { min-height: auto; padding: 104px 24px 96px; }
 .panel.compact { min-height: auto; padding: 88px 24px; }
 #shift .watermark, #close .watermark { width: min(70vw, 520px); height: min(70vw, 520px); }
+
+
+/* ============ the turning-point box ============ */
+.turnbox {
+  position: relative;
+  max-width: 880px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: rgba(217, 89, 38, 0.07);
+  padding: 40px 44px 46px;
+}
+.turnrow { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 30px; }
+.turnrow .ti {
+  width: 46px; height: 46px;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+}
+.turnbox h2 { margin: 0; max-width: none; }
+
+@media (max-width: 759px) {
+  .turnbox { padding: 30px 24px 34px; }
+  .turnrow { gap: 12px; margin-bottom: 22px; }
+  .turnrow .ti { width: 32px; height: 32px; }
+}
