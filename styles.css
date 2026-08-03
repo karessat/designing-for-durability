@@ -536,6 +536,7 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
   color: var(--accent); display: block; margin-bottom: 8px;
 }
 .vpbox p { color: var(--ink-2); font-size: 16.5px; line-height: 1.6; }
+.vpbox p + p { margin-top: 12px; }
 .vpbox strong { color: var(--ink); }
 
 /* ============ the 50/50 rule panel ============ */
