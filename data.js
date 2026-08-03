@@ -10,27 +10,6 @@
 const REAL_APPLIANCES = [[1998,100.0],[1999,96.1],[2000,94.2],[2001,91.3],[2002,89.2],[2003,87.2],[2004,82.5],[2005,82.1],[2006,80.4],[2007,81.0],[2008,79.0],[2009,78.4],[2010,73.2],[2011,69.8],[2012,74.2],[2013,70.8],[2014,64.6],[2015,61.0],[2016,56.3],[2017,53.1],[2018,55.3],[2019,53.3],[2020,53.8],[2021,61.3],[2022,59.2],[2023,52.9],[2024,48.6],[2025,48.9],[2026,49.2]];
 const REAL_REPAIR = [[1998,100.0],[1999,103.0],[2000,103.8],[2001,108.0],[2002,111.3],[2003,114.0],[2004,118.2],[2005,120.8],[2006,122.9],[2007,124.5],[2008,126.4],[2009,131.4],[2010,133.4],[2012,138.6],[2013,142.0],[2014,143.7],[2015,148.7],[2016,151.0],[2017,156.3],[2018,161.7],[2019,168.3],[2020,167.0],[2023,185.3]];
 
-/* Share of Americans living under a state right-to-repair law. PIRG. Drives the household grid. */
-const R2R_STAGE = [
-  { key:"none", pct:0,     headline:"2022",
-    note:"No state had a right-to-repair law in force." },
-  { key:"five", pct:20,    headline:"After the first five states",
-    note:"New York, California, Minnesota, Oregon, Colorado. One American in five." },
-  { key:"now",  pct:25.75, headline:"1 January 2026",
-    note:"Six more laws started that day." },
-  { key:"fall", pct:35,    headline:"Autumn 2026",
-    note:"Connecticut started in July. Texas starts in September." }
-];
-
-/* EU Ecodesign for Sustainable Products Regulation. First working plan, adopted April 2025. */
-const ESPR_TIMELINE = [
-  { year:"2024", label:"The law starts", detail:"Regulation (EU) 2024/1781 comes into force on 18 July." },
-  { year:"2026", label:"First products named", detail:"Iron and steel go first." },
-  { year:"2027", label:"Electronics must be repairable", detail:"Aluminium, textiles and tyres join, with rules on making things last longer." },
-  { year:"2029", label:"Electronics must last", detail:"Durability, recyclability and recycled-content rules. Furniture joined in 2028." },
-  { year:"2030", label:"Nearly everything", detail:"Almost every product needs a Digital Product Passport showing what is inside it." }
-];
-
 /* STILE, August 2026. Hines & McBride. Scored 1-3 and read on the Three Horizons. */
 const STILE = [
   { key:"S", name:"Do people want it?", short:"Social acceptance", score:1.5,
@@ -56,15 +35,3 @@ const HORIZONS = [
   { n:3, name:"Not yet",      gloss:"still missing" }
 ];
 function horizonFor(score){ return score < 1.75 ? 1 : score < 2.25 ? 2 : 3; }
-
-/* 100 U.S. households for the right-to-repair grid. */
-const POP_TYPES = [
-  ["washer","washing machine",8],["dryer","clothes dryer",7],["fridge","refrigerator",9],
-  ["fridge2","refrigerator",5],["range","range",7],["range2","range",4],
-  ["oven","wall oven",5],["microwave","microwave oven",6],["toaster","toaster",4],
-  ["kettle","electric kettle",4],["mixer","stand mixer",4],["processor","food processor",3],
-  ["blender","blender",3],["coffee","coffee maker",5],["vacuum","vacuum cleaner",5],
-  ["robovac","robot vacuum",3],["fan","fan",4],["heater","space heater",4],
-  ["ac","air conditioner",4],["iron","iron",3],["purifier","air purifier",3],
-  ["slowcooker","slow cooker",3],["ricecooker","rice cooker",3],["hairdryer","hair dryer",4]
-];

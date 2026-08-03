@@ -14,106 +14,6 @@ function mulberry32(a) {
 }
 const rand = mulberry32(20260802);
 
-/* ================= 100 HOUSEHOLDS ================= */
-const popInner = document.getElementById("popInner");
-const popTip = document.getElementById("popTip");
-const popPct = document.getElementById("popPct");
-const popLabel = document.getElementById("popLabel");
-const popNote = document.getElementById("popNote");
-
-const roster = [];
-POP_TYPES.forEach(([icon, label, n]) => { for (let i = 0; i < n; i++) roster.push({ icon, label }); });
-while (roster.length > 100) roster.splice(Math.floor(rand() * roster.length), 1);
-for (let i = roster.length - 1; i > 0; i--) {
-  const j = Math.floor(rand() * (i + 1));
-  [roster[i], roster[j]] = [roster[j], roster[i]];
-}
-roster.forEach((u, i) => { u.id = i; u.jx = rand() * 8 - 4; u.jy = rand() * 8 - 4; });
-
-const coverageOrder = roster.map((_, i) => i);
-for (let i = coverageOrder.length - 1; i > 0; i--) {
-  const j = Math.floor(rand() * (i + 1));
-  [coverageOrder[i], coverageOrder[j]] = [coverageOrder[j], coverageOrder[i]];
-}
-coverageOrder.forEach((id, rank) => { roster[id].rank = rank; });
-
-const gridOrder = roster.map((_, i) => i);
-for (let i = gridOrder.length - 1; i > 0; i--) {
-  const j = Math.floor(rand() * (i + 1));
-  [gridOrder[i], gridOrder[j]] = [gridOrder[j], gridOrder[i]];
-}
-
-const units = roster.map((u) => {
-  const el = document.createElement("div");
-  el.className = "unit";
-  el.style.backgroundImage = `url(assets/${u.icon}_d.png)`;
-  el.setAttribute("role", "img");
-  el.setAttribute("aria-label", u.label);
-  el.dataset.id = u.id;
-  popInner.appendChild(el);
-  u.el = el;
-  return u;
-});
-
-let currentPct = 0;
-function showTip(u, x, y) {
-  const covered = u.rank < currentPct;
-  popTip.innerHTML =
-    `<span class="t">HOUSEHOLD ${String(u.id + 1).padStart(3, "0")}</span><br>` +
-    `owns a ${u.label}<br>` +
-    (covered
-      ? `<span style="color:var(--accent)">has a right-to-repair law</span>`
-      : `no right-to-repair law in this state`) +
-    `<br><span style="opacity:.65">an illustration · the percentage is real, per PIRG</span>`;
-  popTip.style.left = Math.min(x + 14, window.innerWidth - 250) + "px";
-  popTip.style.top = Math.min(y + 14, window.innerHeight - 110) + "px";
-  popTip.classList.add("on");
-}
-popInner.addEventListener("pointermove", (e) => {
-  const t = e.target.closest(".unit");
-  if (t) showTip(roster[+t.dataset.id], e.clientX, e.clientY);
-  else popTip.classList.remove("on");
-});
-popInner.addEventListener("pointerleave", () => popTip.classList.remove("on"));
-popInner.addEventListener("click", (e) => {
-  const t = e.target.closest(".unit");
-  if (t) showTip(roster[+t.dataset.id], e.clientX, e.clientY);
-});
-
-function layoutGrid() {
-  const W = popInner.clientWidth, H = popInner.clientHeight;
-  const cols = 10;
-  const twoCol = window.innerWidth >= 760;   // matches the CSS breakpoint
-  // In two-column mode keep the grid inside the left column so the text never covers it.
-  const left = twoCol ? W * 0.04 : 26;
-  const usable = twoCol ? W * 0.50 : W - 52;
-  const top = twoCol ? 70 : 104;
-  const bottom = twoCol ? 150 : 26;
-  const size = twoCol ? (W < 1100 ? 40 : 52) : 34;
-  const cw = usable / cols, ch = (H - top - bottom) / 10;
-  units.forEach((u) => {
-    const pos = gridOrder.indexOf(u.id);
-    u.gx = left + (pos % cols) * cw + cw / 2 - size / 2 + u.jx;
-    u.gy = top + Math.floor(pos / cols) * ch + ch / 2 - size / 2 + u.jy;
-  });
-  units.forEach((u) => { u.el.style.width = size + "px"; u.el.style.height = size + "px"; });
-}
-
-function popSet(stage) {
-  layoutGrid();
-  currentPct = stage.pct;
-  units.forEach((u) => {
-    u.el.style.transform = `translate(${u.gx}px, ${u.gy}px)`;
-    const covered = u.rank < stage.pct;
-    u.el.style.backgroundImage = `url(assets/${u.icon}${covered ? "_o" : "_d"}.png)`;
-    u.el.classList.toggle("is-cov", covered);
-  });
-  popPct.textContent = (stage.pct === 0 ? "0" : (stage.pct % 1 ? stage.pct.toFixed(2) : stage.pct)) + "%";
-  popLabel.textContent = stage.headline.toUpperCase();
-  popNote.textContent = stage.note;
-}
-const R2R = Object.fromEntries(R2R_STAGE.map((s) => [s.key, s]));
-
 /* ================= CHARTS ================= */
 const chartTip = document.getElementById("chartTip");
 const NS = "http://www.w3.org/2000/svg";
@@ -224,39 +124,13 @@ const realChart = lineChart(document.getElementById("realChart"), {
 /* stage panel switching */
 const eqPanels = [...document.querySelectorAll(".eq-panel")];
 function eqShow(w) { eqPanels.forEach((p) => p.classList.toggle("on", p.dataset.eq === w)); }
-const sigPanels = [...document.querySelectorAll(".sigstage-content")];
-function sigShow(w) { sigPanels.forEach((c) => c.classList.toggle("on", c.dataset.vis === w)); }
-
-/* ESPR timeline */
-const tl = document.getElementById("esprTimeline");
-tl.innerHTML = `<h4>What Europe has already scheduled</h4>` +
-  ESPR_TIMELINE.map((r) => `<div class="trow"><div class="ty">${r.year}</div><div class="tb"><div class="tl">${r.label}</div><div class="td">${r.detail}</div></div></div>`).join("");
-const trows = [...tl.querySelectorAll(".trow")];
-let tlLit = false;
-function litTimeline() {
-  if (tlLit) return;
-  tlLit = true;
-  trows.forEach((r, i) => setTimeout(() => r.classList.add("lit"), reduceMotion ? 0 : i * 240));
-}
 
 /* ================= STEP HANDLERS ================= */
 const handlers = {
   "eq-real": () => { eqShow("real"); realChart.show("appl"); },
   "eq-rep":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
-  "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
+  "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); }
 
-  "sig-s1":    () => sigShow(null),
-  "sig-s2":    () => { sigShow("s2"); popSet(R2R.none); },
-  "sig-s2a":   () => { sigShow("s2"); popSet(R2R.five); },
-  "sig-s2b2":  () => { sigShow("s2"); popSet(R2R.now); },
-  "sig-s2c":   () => { sigShow("s2"); popSet(R2R.fall); },
-  "sig-s2b":   () => sigShow("s2b"),
-  "sig-s3":    () => { sigShow("s3"); litTimeline(); },
-  "sig-s3b":   () => { sigShow("s3"); litTimeline(); },
-  "sig-s3c":   () => { sigShow("s3"); litTimeline(); },
-  "sig-w2":    () => sigShow("w2"),
-  "sig-w3":    () => sigShow("w3"),
-  "sig-w4":    () => sigShow("w4")
 };
 
 const stepObs = new IntersectionObserver((entries) => {
@@ -270,12 +144,10 @@ const stepObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelectorAll(".step").forEach((s) => stepObs.observe(s));
 
-popSet(R2R.none);
 window.addEventListener("resize", () => {
   const a = document.querySelector(".step.active");
   if (a && handlers[a.dataset.step]) handlers[a.dataset.step]();
-  else popSet(R2R.none);
-});
+  else });
 
 /* ================= STILE ================= */
 document.getElementById("scaleKey").innerHTML = HORIZONS.map((h) =>

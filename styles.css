@@ -394,39 +394,25 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 
 /* ============ two-column scrolly on wide screens ============ */
-/* Two columns from 760px up: visual on the left, text on the right, never overlapping. */
+/* The equilibrium section keeps its chart on the left and its text on the right.
+   The signals section is plain full-width cards, so it takes no part in this. */
 @media (min-width: 760px) {
-  .popreadout { left: 0; right: 46%; }
-  #equilibrium .eq-panel,
-  #signals .sigstage-content { justify-content: flex-start; padding-left: 4vw; }
+  #equilibrium .eq-panel { justify-content: flex-start; padding-left: 4vw; }
   #equilibrium .chartbox { width: 52%; }
-  #signals .sigvisual { width: 55%; padding: 0; }
-  #signals .sigvisual .chartbox,
-  #signals .sigvisual .covbars,
-  #signals .sigvisual .timeline,
-  .bignum-panel { max-width: 100%; }
-
-  #equilibrium .step,
-  #signals .step { justify-content: flex-end; }
-  #equilibrium .step .card,
-  #signals .step .card { margin-right: 4vw; max-width: min(40%, 460px); }
+  #equilibrium .step { justify-content: flex-end; }
+  #equilibrium .step .card { margin-right: 4vw; max-width: min(40%, 460px); }
 }
-/* Wider screens: give both columns a little more breathing room. */
 @media (min-width: 1180px) {
-  #equilibrium .eq-panel,
-  #signals .sigstage-content { padding-left: 9vw; }
+  #equilibrium .eq-panel { padding-left: 9vw; }
   #equilibrium .chartbox { width: min(50%, 740px); }
-  #signals .sigvisual { width: 52%; }
-  #equilibrium .step .card,
-  #signals .step .card { margin-right: 5vw; max-width: 460px; }
+  #equilibrium .step .card { margin-right: 5vw; max-width: 460px; }
 }
-
 
 /* ============ narrow screens: visual top, card bottom ============ */
 @media (max-width: 759px) {
-  #equilibrium .stage, #signals .stage { align-items: flex-start; padding-top: 3svh; }
+  #equilibrium .stage { align-items: flex-start; padding-top: 3svh; }
   #equilibrium .eq-panel { align-items: flex-start; padding-top: 3svh; }
-  #equilibrium .step, #signals .step { align-items: flex-end; padding-bottom: 4svh; }
+  #equilibrium .step { align-items: flex-end; padding-bottom: 4svh; }
   .sigstage-content { align-items: flex-start !important; padding-top: 3svh; }
   .sigvisual .tag { font-size: 42px; margin-bottom: -8px; }
   .sigvisual .cut { width: 44vw; height: 44vw; }
@@ -591,9 +577,14 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 
 /* ============ a step with no visual: card spans the column ============ */
 @media (min-width: 760px) {
-  #signals .step.wide { justify-content: center; }
-  #signals .step.wide .card { margin-right: 0; max-width: min(760px, 84%); }
+  .step.wide { justify-content: center; }
+  .step.wide .card { margin-right: 0; max-width: min(760px, 84%); }
 }
+/* the signals section is now plain cards, so its steps need no viewport height */
+#signals .step { min-height: auto; padding: 30px 24px; }
+#signals .step .card { opacity: 1; }
+#signals .step .card p + p { margin-top: 14px; }
+#signals .steps { padding: 20px 0 60px; }
 
 
 /* ============ panels size to their content ============ */
