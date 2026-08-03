@@ -404,7 +404,6 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
   #signals .sigvisual .chartbox,
   #signals .sigvisual .covbars,
   #signals .sigvisual .timeline,
-  #signals .sigvisual .rulebox { width: 100%; }
   .bignum-panel { max-width: 100%; }
 
   #equilibrium .step,
@@ -553,22 +552,6 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 .vpbox p + p { margin-top: 12px; }
 .vpbox strong { color: var(--ink); }
 
-/* ============ the 50/50 rule panel ============ */
-.rulebox { width: min(90%, 560px); text-align: left; }
-.rulebox h4 {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
-  color: var(--muted); margin-bottom: 22px;
-}
-.rr { display: grid; grid-template-columns: 34px 1fr; gap: 14px; align-items: start; padding: 14px 0; border-top: 1px solid var(--hairline); }
-.rr .rn { font-family: var(--disp); font-size: 22px; font-weight: 600; color: var(--accent); }
-.rr .rt { font-size: 18px; color: var(--ink-2); line-height: 1.45; }
-.rr .rt b { color: var(--ink); }
-.rres { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--hairline); }
-.rres span { font-family: var(--mono); font-size: 12.5px; padding: 7px 12px; border-radius: 4px; }
-.rres .ry { background: var(--accent); color: #0e0e0d; }
-.rres .rnn { border: 1px solid var(--baseline); color: var(--ink-2); }
-.rulesrc { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.55; margin-top: 18px; }
-
 /* ============ the 35 -> 39 jump ============ */
 .jump { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 14px 0 16px; }
 .jump .j1 { font-family: var(--disp); font-weight: 600; font-size: clamp(44px,7vw,84px); color: var(--muted); line-height: 1; }
@@ -584,7 +567,6 @@ footer p { font-family: var(--mono); font-size: 11.5px; color: var(--muted); lin
 .hchip.h3 { border-color: var(--baseline); color: var(--muted); }
 
 @media (max-width: 759px) {
-  .rulebox { width: 92%; }
   .rr .rt { font-size: 16px; }
   .jump { gap: 12px; }
 }
