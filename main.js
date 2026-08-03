@@ -219,14 +219,16 @@ const realChart = lineChart(document.getElementById("realChart"), {
 });
 
 const ppiChart = lineChart(document.getElementById("ppiChart"), {
-  title: "What shoppers pay, against what factories charge",
-  sub: "1998 = 100 · not adjusted for inflation · BLS appliance CPI and appliance PPI",
+  title: "How much each has changed since 1998",
+  sub: "percent change, not price · steel is a raw material and an appliance is a finished machine, so only the change can be compared",
   series: [
-    { key: "cpi", label: "Shop price", color: "var(--blue)", data: NOM_APPLIANCES },
-    { key: "ppi", label: "Factory price", color: "var(--aqua)", data: NOM_PPI }
+    { key: "steel", label: "Steel", color: "var(--aqua)", data: STEEL_PCT },
+    { key: "appl", label: "What shoppers pay", color: "var(--blue)", data: APPL_PCT }
   ],
-  y0: 70, y1: 155, yTicks: [80, 100, 120, 140], baseline: 100,
-  xTicks: [1998, 2005, 2012, 2019, 2026], tipFmt: (v) => v.toFixed(0)
+  y0: -40, y1: 235, yTicks: [0, 50, 100, 150, 200], baseline: 0,
+  xTicks: [1998, 2005, 2012, 2019, 2026],
+  yFmt: (t) => (t > 0 ? "+" : "") + t + "%",
+  tipFmt: (v) => (v > 0 ? "+" : "") + v.toFixed(1) + "%"
 });
 
 const vehChart = lineChart(document.getElementById("vehChart"), {
@@ -262,7 +264,7 @@ const handlers = {
   "eq-real": () => { eqShow("real"); realChart.show("appl"); },
   "eq-rep":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
   "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
-  "eq-ppi":  () => { eqShow("ppi"); ppiChart.show("cpi"); ppiChart.show("ppi"); },
+  "eq-ppi":  () => { eqShow("ppi"); ppiChart.show("steel"); ppiChart.show("appl"); },
 
   "sig-s1":    () => sigShow("s1"),
   "sig-s1b":   () => { sigShow("s1b"); vehChart.show("age"); vehChart.annotate("rec"); },
@@ -359,8 +361,8 @@ function table(el, head, rows) {
 const repMap = Object.fromEntries(REAL_REPAIR);
 table("realTable", ["Year", "Buying (real)", "Fixing (real)"],
   REAL_APPLIANCES.map(([y, v]) => [y, v.toFixed(1), (repMap[y] ?? "—").toString()]));
-const ppiMap = Object.fromEntries(NOM_PPI);
-table("ppiTable", ["Year", "Shop price", "Factory price"],
-  NOM_APPLIANCES.map(([y, v]) => [y, v.toFixed(1), (ppiMap[y] ?? "—").toString()]));
+const steelMap = Object.fromEntries(STEEL_PCT);
+table("ppiTable", ["Year", "Appliance price change", "Steel price change"],
+  APPL_PCT.map(([y, v]) => [y, v.toFixed(1) + "%", (steelMap[y] !== undefined ? steelMap[y].toFixed(1) + "%" : "—")]));
 
 })();

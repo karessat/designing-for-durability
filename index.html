@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260802i">
+<link rel="stylesheet" href="styles.css?v=20260802j">
 </head>
 <body>
 
@@ -81,10 +81,11 @@
       <div class="aside"><b>ONE HONEST GAP</b>The repair index has barely been published since July 2024, after BLS cut part of its price collection. We know what repair costs did up to 2023. We do not have good national numbers since.</div>
     </div></div>
     <div class="step" data-step="eq-ppi"><div class="card">
-      <p class="cardkicker">The squeeze nobody sees</p>
-      <p>Shoppers got cheaper machines. Factories did not get cheaper inputs. Since 1998 the price shoppers pay is up <strong class="num">1%</strong>. The price factories charge is up <strong class="num">40%</strong>.</p>
-      <p>That gap is twenty-eight years of margin being handed to the customer. <strong>It is also why the current model is running out of room.</strong></p>
-      <p class="srcline">BLS: major appliances CPI against household appliance PPI, both 1998 = 100. PPI covers U.S. factories; CPI includes imports and adjusts harder for quality, so some of the gap is definitional.</p>
+      <p class="cardkicker">What it costs to build one</p>
+      <p>Steel is roughly half the weight of a washing machine. Since 1998 American steel has gone up <strong class="num">199%</strong>. What shoppers pay for a major appliance has gone up <strong class="num">1%</strong>.</p>
+      <p>Manufacturers closed that gap by building in cheaper countries, automating, and taking less per machine. <strong>Since June 2025 the first of those does less work: the 50% steel tariff is charged on the steel inside an imported appliance too.</strong></p>
+      <div class="aside"><b>HOW TO READ THIS</b>Both lines show how much each has changed since 1998, not what either costs. A tonne of steel and a washing machine are not comparable prices. Steel is also one input among many, and much of this industry's production moved abroad over the period.</div>
+      <p class="srcline">BLS iron and steel PPI (WPU101) against major appliances CPI (CUUR0000SS30021), each as percent change from its own 1998 level.</p>
     </div></div>
   </div>
 </section>
@@ -411,7 +412,7 @@
   <h2>How this was put together</h2>
   <p class="note">Government, university and UN figures are used as they are. Surveys are named, with who ran them and how many people they asked. Anything from a company with something to sell is labelled where it appears. Two things are said plainly rather than smoothed over: the U.S. repair price index has barely been published since July 2024, and the 100 households in the grid are illustrations — the percentages are real, the households are not.</p>
   <ol>
-    <li>U.S. Bureau of Labor Statistics, via the Public Data API, retrieved August 2026: major appliances CPI (CUUR0000SS30021), household repair CPI (CUUR0000SEHP04), all-items CPI (CUUR0000SA0), household appliance PPI (WPU1241). Real figures are the price index divided by all-items CPI. The repair index has very few observations after mid-2024, following BLS collection cuts announced in 2025.</li>
+    <li>U.S. Bureau of Labor Statistics, via the Public Data API, retrieved August 2026: major appliances CPI (CUUR0000SS30021), household repair CPI (CUUR0000SEHP04), all-items CPI (CUUR0000SA0), iron and steel PPI (WPU101). Real figures are the price index divided by all-items CPI. The steel comparison is shown as percent change from 1998 for each series separately, because a raw material and a finished machine have no comparable price level. The repair index has very few observations after mid-2024, following BLS collection cuts announced in 2025.</li>
     <li>Proclamation 10896 steel derivative list, adding large household appliances at a 50% tariff on steel content, effective 23 June 2025.</li>
     <li>Flaaen, Hortaçsu &amp; Tintelnot, "The Production Relocation and Price Effects of US Trade Policy: The Case of Washing Machines," <em>American Economic Review</em> 110(7), 2020.</li>
     <li>McKinsey Global State of White Goods Survey, fielded Q4 2024, more than 9,000 appliance buyers across Europe, Japan and the United States, screened to people who bought a major appliance in the previous 24 months. Ten-year-plus replacement share 35% (2023) → 39% (2024). A consultancy, and stated behaviour.</li>
@@ -442,7 +443,7 @@
     <div id="realTable"></div>
   </details>
   <details>
-    <summary>DATA TABLE · what shoppers pay against what factories charge, 1998 = 100</summary>
+    <summary>DATA TABLE · percent change since 1998: appliance prices and steel</summary>
     <div id="ppiTable"></div>
   </details>
 </section>
@@ -455,7 +456,7 @@
 <div id="popTip" role="tooltip"></div>
 <div class="chart-tip" id="chartTip" role="tooltip"></div>
 
-<script src="data.js?v=20260802i"></script>
-<script src="main.js?v=20260802i"></script>
+<script src="data.js?v=20260802j"></script>
+<script src="main.js?v=20260802j"></script>
 </body>
 </html>
