@@ -85,12 +85,17 @@ popInner.addEventListener("click", (e) => {
 function layoutGrid() {
   const W = popInner.clientWidth, H = popInner.clientHeight;
   const cols = 10;
-  const margin = Math.min(W, H) < 700 ? 34 : 80;
-  const cw = (W - margin * 2) / cols, ch = (H - margin * 2 - 70) / 10;
+  const narrow = W < 1000;
+  const side = narrow ? 26 : 80;
+  // reserve room for the readout: above the grid when narrow, below when wide
+  const top = narrow ? 104 : 80;
+  const bottom = narrow ? 26 : 150;
+  const size = narrow ? 34 : 52;
+  const cw = (W - side * 2) / cols, ch = (H - top - bottom) / 10;
   units.forEach((u) => {
     const pos = gridOrder.indexOf(u.id);
-    u.gx = margin + (pos % cols) * cw + cw / 2 - 26 + u.jx;
-    u.gy = margin + Math.floor(pos / cols) * ch + ch / 2 - 26 + u.jy;
+    u.gx = side + (pos % cols) * cw + cw / 2 - size / 2 + u.jx;
+    u.gy = top + Math.floor(pos / cols) * ch + ch / 2 - size / 2 + u.jy;
   });
 }
 
