@@ -4,7 +4,6 @@
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- seeded RNG so the population is stable across loads ---------- */
 function mulberry32(a) {
   return function () {
     a |= 0; a = (a + 0x6D2B79F5) | 0;
@@ -15,7 +14,7 @@ function mulberry32(a) {
 }
 const rand = mulberry32(20260802);
 
-/* ================= POPULATION: 100 U.S. HOUSEHOLDS ================= */
+/* ================= 100 HOUSEHOLDS ================= */
 const popInner = document.getElementById("popInner");
 const popTip = document.getElementById("popTip");
 const popPct = document.getElementById("popPct");
@@ -29,8 +28,8 @@ for (let i = roster.length - 1; i > 0; i--) {
   const j = Math.floor(rand() * (i + 1));
   [roster[i], roster[j]] = [roster[j], roster[i]];
 }
-// coverageRank: the order in which households gain coverage. Fixed, so growth is additive.
 roster.forEach((u, i) => { u.id = i; u.jx = rand() * 8 - 4; u.jy = rand() * 8 - 4; });
+
 const coverageOrder = roster.map((_, i) => i);
 for (let i = coverageOrder.length - 1; i > 0; i--) {
   const j = Math.floor(rand() * (i + 1));
@@ -38,7 +37,6 @@ for (let i = coverageOrder.length - 1; i > 0; i--) {
 }
 coverageOrder.forEach((id, rank) => { roster[id].rank = rank; });
 
-// separate shuffle for on-screen placement, so covered units don't cluster
 const gridOrder = roster.map((_, i) => i);
 for (let i = gridOrder.length - 1; i > 0; i--) {
   const j = Math.floor(rand() * (i + 1));
@@ -64,9 +62,9 @@ function showTip(u, x, y) {
     `<span class="t">HOUSEHOLD ${String(u.id + 1).padStart(3, "0")}</span><br>` +
     `owns a ${u.label}<br>` +
     (covered
-      ? `<span style="color:var(--accent)">covered by a state right-to-repair law</span>`
+      ? `<span style="color:var(--accent)">has a right-to-repair law</span>`
       : `no right-to-repair law in this state`) +
-    `<br><span style="opacity:.65">illustrative household · coverage share per PIRG</span>`;
+    `<br><span style="opacity:.65">an illustration · the percentage is real, per PIRG</span>`;
   popTip.style.left = Math.min(x + 14, window.innerWidth - 250) + "px";
   popTip.style.top = Math.min(y + 14, window.innerHeight - 110) + "px";
   popTip.classList.add("on");
@@ -87,7 +85,6 @@ function layoutGrid() {
   const cols = 10;
   const narrow = W < 1000;
   const side = narrow ? 26 : 80;
-  // reserve room for the readout: above the grid when narrow, below when wide
   const top = narrow ? 104 : 80;
   const bottom = narrow ? 26 : 150;
   const size = narrow ? 34 : 52;
@@ -112,9 +109,9 @@ function popSet(stage) {
   popLabel.textContent = stage.headline.toUpperCase();
   popNote.textContent = stage.note;
 }
-const R2R_BY_KEY = Object.fromEntries(R2R_STAGE.map((s) => [s.key, s]));
+const R2R = Object.fromEntries(R2R_STAGE.map((s) => [s.key, s]));
 
-/* ================= CHART HELPERS ================= */
+/* ================= CHARTS ================= */
 const chartTip = document.getElementById("chartTip");
 const NS = "http://www.w3.org/2000/svg";
 function svgEl(tag, attrs, parent) {
@@ -125,14 +122,14 @@ function svgEl(tag, attrs, parent) {
 }
 
 function lineChart(container, opts) {
-  const W = 760, H = 440, m = { t: 34, r: 112, b: 40, l: 48 };
+  const W = 760, H = 440, m = { t: 34, r: 128, b: 40, l: 48 };
   container.innerHTML = `<h3>${opts.title}</h3><div class="chart-sub">${opts.sub}</div>`;
   const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": opts.title }, container);
   const iw = W - m.l - m.r, ih = H - m.t - m.b;
   const xs = opts.series.flatMap((s) => s.data.map((d) => d[0]));
   const ys = opts.series.flatMap((s) => s.data.map((d) => d[1]));
   const x0 = Math.min(...xs), x1 = Math.max(...xs);
-  const y0 = opts.y0 ?? Math.min(...ys), y1 = Math.max(...ys) * 1.04;
+  const y0 = opts.y0 ?? Math.min(...ys), y1 = opts.y1 ?? Math.max(...ys) * 1.04;
   const X = (v) => m.l + ((v - x0) / (x1 - x0)) * iw;
   const Y = (v) => m.t + ih - ((v - y0) / (y1 - y0)) * ih;
 
@@ -145,6 +142,10 @@ function lineChart(container, opts) {
     svgEl("text", { x: X(t), y: H - m.b + 22, "text-anchor": "middle" }, g).textContent = t;
   });
   svgEl("line", { x1: m.l, x2: W - m.r, y1: m.t + ih, y2: m.t + ih, class: "axisline" }, svg);
+  if (opts.baseline !== undefined) {
+    svgEl("line", { x1: m.l, x2: W - m.r, y1: Y(opts.baseline), y2: Y(opts.baseline),
+      stroke: "var(--baseline)", "stroke-dasharray": "4 4" }, svg);
+  }
 
   const paths = {};
   opts.series.forEach((s) => {
@@ -162,7 +163,7 @@ function lineChart(container, opts) {
   (opts.annotations || []).forEach((a) => {
     const gg = svgEl("g", { opacity: 0 }, svg);
     svgEl("line", { x1: X(a.x), x2: X(a.x), y1: Y(a.y) - 8, y2: m.t + 6, stroke: "var(--baseline)", "stroke-dasharray": "3 4" }, gg);
-    svgEl("text", { x: X(a.x), y: m.t - 4, "text-anchor": "middle", class: "ann", fill: "var(--ink-2)" }, gg).textContent = a.text;
+    svgEl("text", { x: X(a.x), y: m.t - 4, "text-anchor": a.anchor || "middle", class: "ann", fill: "var(--ink-2)" }, gg).textContent = a.text;
     anns[a.key] = gg;
   });
 
@@ -184,7 +185,7 @@ function lineChart(container, opts) {
       hoverDot.setAttribute("cy", Y(best.d[1]));
       hoverDot.setAttribute("opacity", 1);
       chartTip.innerHTML = `<span style="color:var(--ink)">${best.d[0]}</span><br>${best.s.label}: ${opts.tipFmt ? opts.tipFmt(best.d[1]) : best.d[1]}`;
-      chartTip.style.left = Math.min(e.clientX + 14, window.innerWidth - 210) + "px";
+      chartTip.style.left = Math.min(e.clientX + 14, window.innerWidth - 230) + "px";
       chartTip.style.top = e.clientY + 14 + "px";
       chartTip.classList.add("on");
     } else {
@@ -206,33 +207,46 @@ function lineChart(container, opts) {
   };
 }
 
-const cpi = lineChart(document.getElementById("cpiChart"), {
-  title: "The price of the machine against the price of fixing it",
-  sub: "BLS CPI, U.S. city average, annual, indexed 1998 = 100 · gaps: 2011, 2021–22 · source: BLS Public Data API",
+const realChart = lineChart(document.getElementById("realChart"), {
+  title: "After inflation: what a machine costs, and what fixing one costs",
+  sub: "1998 = 100 · BLS price indexes divided by all-items CPI · gaps are years BLS did not publish",
   series: [
-    { key: "app", label: "Major appliances", color: "var(--blue)", data: CPI_APPLIANCES },
-    { key: "rep", label: "Repair of household items", color: "var(--accent)", data: CPI_REPAIR }
+    { key: "appl", label: "Buying a machine", color: "var(--blue)", data: REAL_APPLIANCES },
+    { key: "rep", label: "Fixing one", color: "var(--accent)", data: REAL_REPAIR }
   ],
-  y0: 60, yTicks: [100, 200, 300], xTicks: [1998, 2005, 2012, 2018, 2023],
-  tipFmt: (v) => v.toFixed(1)
+  y0: 30, y1: 200, yTicks: [50, 100, 150], baseline: 100,
+  xTicks: [1998, 2005, 2012, 2019, 2026], tipFmt: (v) => v.toFixed(0)
 });
 
-const veh = lineChart(document.getElementById("vehChart"), {
-  title: "Average age of U.S. light vehicles",
+const ppiChart = lineChart(document.getElementById("ppiChart"), {
+  title: "What shoppers pay, against what factories charge",
+  sub: "1998 = 100 · not adjusted for inflation · BLS appliance CPI and appliance PPI",
+  series: [
+    { key: "cpi", label: "Shop price", color: "var(--blue)", data: NOM_APPLIANCES },
+    { key: "ppi", label: "Factory price", color: "var(--aqua)", data: NOM_PPI }
+  ],
+  y0: 70, y1: 155, yTicks: [80, 100, 120, 140], baseline: 100,
+  xTicks: [1998, 2005, 2012, 2019, 2026], tipFmt: (v) => v.toFixed(0)
+});
+
+const vehChart = lineChart(document.getElementById("vehChart"), {
+  title: "Average age of an American car",
   sub: "years · DOT/BTS Table 1-26; S&P Global Mobility from 2022",
   series: [{ key: "age", label: "Average age", color: "var(--accent)", data: VEHICLE_AGE }],
   y0: 8, yTicks: [9, 10, 11, 12, 13], xTicks: [2002, 2010, 2016, 2022, 2025],
   yFmt: (t) => t + "y", tipFmt: (v) => v + " years",
-  annotations: [{ key: "rec", x: 2025, y: 12.8, text: "12.8y — record, 8th consecutive year" }]
+  annotations: [{ key: "rec", x: 2025, y: 12.8, text: "12.8 years — a record, 8 years running", anchor: "end" }]
 });
 
-/* equilibrium stage: swap between the two charts */
+/* stage panel switching */
 const eqPanels = [...document.querySelectorAll(".eq-panel")];
-function eqShow(which) { eqPanels.forEach((p) => p.classList.toggle("on", p.dataset.eq === which)); }
+function eqShow(w) { eqPanels.forEach((p) => p.classList.toggle("on", p.dataset.eq === w)); }
+const sigPanels = [...document.querySelectorAll(".sigstage-content")];
+function sigShow(w) { sigPanels.forEach((c) => c.classList.toggle("on", c.dataset.vis === w)); }
 
-/* ================= ESPR TIMELINE ================= */
+/* ESPR timeline */
 const tl = document.getElementById("esprTimeline");
-tl.innerHTML = `<h4>EU Ecodesign for Sustainable Products Regulation</h4>` +
+tl.innerHTML = `<h4>What Europe has already scheduled</h4>` +
   ESPR_TIMELINE.map((r) => `<div class="trow"><div class="ty">${r.year}</div><div class="tb"><div class="tl">${r.label}</div><div class="td">${r.detail}</div></div></div>`).join("");
 const trows = [...tl.querySelectorAll(".trow")];
 let tlLit = false;
@@ -242,30 +256,27 @@ function litTimeline() {
   trows.forEach((r, i) => setTimeout(() => r.classList.add("lit"), reduceMotion ? 0 : i * 240));
 }
 
-/* ================= SIGNAL STAGE ================= */
-const sigContents = [...document.querySelectorAll(".sigstage-content")];
-function sigMode(vis) {
-  sigContents.forEach((c) => c.classList.toggle("on", c.dataset.vis === vis));
-  if (vis === "s3") litTimeline();
-}
-
 /* ================= STEP HANDLERS ================= */
 const handlers = {
-  "eq-app": () => { eqShow("cpi"); cpi.show("app"); },
-  "eq-rep": () => { eqShow("cpi"); cpi.show("app"); cpi.show("rep"); },
-  "eq-why": () => { eqShow("cpi"); cpi.show("app"); cpi.show("rep"); },
-  "eq-veh": () => { eqShow("veh"); veh.show("age"); veh.annotate("rec"); },
-  "sig-s1a": () => { sigMode("s1"); popSet(R2R_BY_KEY.none); },
-  "sig-s1b": () => { sigMode("s1"); popSet(R2R_BY_KEY.five); },
-  "sig-s1c": () => { sigMode("s1"); popSet(R2R_BY_KEY.now); },
-  "sig-s1d": () => { sigMode("s1"); popSet(R2R_BY_KEY.fall); },
-  "sig-s2": () => sigMode("s2"),
-  "sig-s3a": () => sigMode("s3"),
-  "sig-s3b": () => sigMode("s3"),
-  "sig-s3c": () => sigMode("s3"),
-  "sig-w1": () => sigMode("w1"),
-  "sig-w2": () => sigMode("w2"),
-  "sig-w3": () => sigMode("w3")
+  "eq-rule": () => eqShow("rule"),
+  "eq-real": () => { eqShow("real"); realChart.show("appl"); },
+  "eq-rep":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
+  "eq-why":  () => { eqShow("real"); realChart.show("appl"); realChart.show("rep"); },
+  "eq-ppi":  () => { eqShow("ppi"); ppiChart.show("cpi"); ppiChart.show("ppi"); },
+
+  "sig-s1":    () => sigShow("s1"),
+  "sig-s1b":   () => { sigShow("s1b"); vehChart.show("age"); vehChart.annotate("rec"); },
+  "sig-s2":    () => { sigShow("s2"); popSet(R2R.none); },
+  "sig-s2a":   () => { sigShow("s2"); popSet(R2R.five); },
+  "sig-s2b2":  () => { sigShow("s2"); popSet(R2R.now); },
+  "sig-s2c":   () => { sigShow("s2"); popSet(R2R.fall); },
+  "sig-s2b":   () => sigShow("s2b"),
+  "sig-s3":    () => { sigShow("s3"); litTimeline(); },
+  "sig-s3b":   () => { sigShow("s3"); litTimeline(); },
+  "sig-s3c":   () => { sigShow("s3"); litTimeline(); },
+  "sig-w1":    () => sigShow("w1"),
+  "sig-w2":    () => sigShow("w2"),
+  "sig-w3":    () => sigShow("w3")
 };
 
 const stepObs = new IntersectionObserver((entries) => {
@@ -279,16 +290,16 @@ const stepObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 document.querySelectorAll(".step").forEach((s) => stepObs.observe(s));
 
-popSet(R2R_BY_KEY.none);
+popSet(R2R.none);
 window.addEventListener("resize", () => {
-  const active = document.querySelector(".step.active");
-  if (active && handlers[active.dataset.step]) handlers[active.dataset.step]();
-  else popSet(R2R_BY_KEY.none);
+  const a = document.querySelector(".step.active");
+  if (a && handlers[a.dataset.step]) handlers[a.dataset.step]();
+  else popSet(R2R.none);
 });
 
 /* ================= STILE ================= */
 document.getElementById("scaleKey").innerHTML = HORIZONS.map((h) =>
-  `<span class="sk"><span class="n">${h.n} · HORIZON ${h.n} — ${h.name.toUpperCase()}</span><span class="g">${h.gloss}</span></span>`
+  `<span class="sk"><span class="n">${h.n} — ${h.name.toUpperCase()}</span><span class="g">${h.gloss}</span></span>`
 ).join("");
 
 const stileBox = document.getElementById("stileRows");
@@ -298,16 +309,15 @@ STILE.forEach((s) => {
   row.className = "stilerow";
   row.setAttribute("tabindex", "0");
   row.innerHTML =
-    `<div class="top"><span class="k">${s.key}</span><span class="n">${s.name}</span>` +
-    `<span class="hchip h${hz}">H${hz} · ${HORIZONS[hz - 1].name}</span>` +
+    `<div class="top"><span class="k">${s.key}</span><span class="n">${s.name}<span class="nsub">${s.short}</span></span>` +
+    `<span class="hchip h${hz}">${HORIZONS[hz - 1].name}</span>` +
     `<span class="sc num">${s.score.toFixed(1)}</span></div>` +
     `<div class="track"><div class="dot" style="left:${((s.score - 1) / 2) * 100}%"></div></div>` +
-    `<div class="rationale">${s.rationale}<div class="watch"><b>WATCH FOR</b> ${s.watch}</div></div>` +
-    `<div class="hint">CLICK FOR RATIONALE AND WATCH INDICATOR</div>`;
+    `<div class="rationale">${s.rationale}<div class="watch"><b>WHAT TO WATCH</b> ${s.watch}</div></div>` +
+    `<div class="hint">CLICK TO OPEN</div>`;
   const toggle = () => {
     row.classList.toggle("open");
-    row.querySelector(".hint").textContent = row.classList.contains("open")
-      ? "CLICK TO CLOSE" : "CLICK FOR RATIONALE AND WATCH INDICATOR";
+    row.querySelector(".hint").textContent = row.classList.contains("open") ? "CLICK TO CLOSE" : "CLICK TO OPEN";
   };
   row.addEventListener("click", toggle);
   row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
@@ -331,13 +341,13 @@ const navObs = new IntersectionObserver((entries) => {
 }, { rootMargin: "-40% 0px -55% 0px" });
 navLinks.map((a) => document.getElementById(a.dataset.nav)).filter(Boolean).forEach((t) => navObs.observe(t));
 
-/* ================= DEEP LINKS (#s=<step-id>) ================= */
+/* ================= DEEP LINKS ================= */
 (function () {
   const m = location.hash.match(/s=([\w-]+)/);
   if (!m) return;
   if (location.hash.includes("instant")) document.documentElement.classList.add("no-anim");
-  const target = document.querySelector(`[data-step="${m[1]}"]`) || document.getElementById(m[1]);
-  if (target) setTimeout(() => target.scrollIntoView({ behavior: "instant", block: "center" }), 60);
+  const t = document.querySelector(`[data-step="${m[1]}"]`) || document.getElementById(m[1]);
+  if (t) setTimeout(() => t.scrollIntoView({ behavior: "instant", block: "center" }), 60);
 })();
 
 /* ================= DATA TABLES ================= */
@@ -346,9 +356,11 @@ function table(el, head, rows) {
     `<table><thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>` +
     rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("") + "</tbody></table>";
 }
-const repMap = Object.fromEntries(CPI_REPAIR);
-table("cpiTable", ["Year", "Major appliances", "Repair of household items"],
-  CPI_APPLIANCES.map(([y, v]) => [y, v.toFixed(1), (repMap[y] ?? "—").toString()]));
-table("vehTable", ["Year", "Average age (years)"], VEHICLE_AGE.map(([y, v]) => [y, v.toFixed(1)]));
+const repMap = Object.fromEntries(REAL_REPAIR);
+table("realTable", ["Year", "Buying (real)", "Fixing (real)"],
+  REAL_APPLIANCES.map(([y, v]) => [y, v.toFixed(1), (repMap[y] ?? "—").toString()]));
+const ppiMap = Object.fromEntries(NOM_PPI);
+table("ppiTable", ["Year", "Shop price", "Factory price"],
+  NOM_APPLIANCES.map(([y, v]) => [y, v.toFixed(1), (ppiMap[y] ?? "—").toString()]));
 
 })();

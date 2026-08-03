@@ -1,66 +1,70 @@
 /* All series are real, sourced values. See the Sources section in index.html. */
 
-/* BLS CPI annual averages via BLS Public Data API, indexed 1998 = 100.
-   Major appliances: CUUR0000SS30021. Repair of household items: CUUR0000SEHP04.
-   Annual averages are unavailable for 2011, 2021, 2022 (gaps in the published series). */
-const CPI_APPLIANCES = [[1998,100.0],[1999,98.2],[2000,99.5],[2001,99.2],[2002,98.4],[2003,98.5],[2004,95.6],[2005,98.3],[2006,99.5],[2007,103.0],[2008,104.3],[2009,103.2],[2010,98.0],[2012,104.5],[2013,101.2],[2014,93.8],[2015,88.7],[2016,82.9],[2017,79.8],[2018,85.2],[2019,83.6],[2020,85.5],[2023,98.9]];
-const CPI_REPAIR = [[1998,100.0],[1999,105.3],[2000,109.6],[2001,117.3],[2002,122.9],[2003,128.7],[2004,136.9],[2005,144.8],[2006,152.0],[2007,158.3],[2008,167.0],[2009,172.9],[2010,178.5],[2012,195.2],[2013,203.0],[2014,208.6],[2015,216.2],[2016,222.3],[2017,235.1],[2018,249.2],[2019,264.0],[2020,265.2],[2023,346.4]];
+/* ---- BLS, via the Public Data API, retrieved August 2026 ----
+   Major appliances CPI: CUUR0000SS30021.  Household repair CPI: CUUR0000SEHP04.
+   All-items CPI: CUUR0000SA0.  Household appliance PPI: WPU1241.
+   "Real" = the price index divided by all-items CPI, so inflation is taken out.
+   Everything is set to 100 in 1998 so the lines start together.
+   The 2026 point is June 2026. Gaps are years BLS did not publish an annual average. */
 
-/* Average age of U.S. light vehicles, years.
-   DOT/BTS National Transportation Statistics Table 1-26; 2022 onward per S&P Global Mobility. */
+const REAL_APPLIANCES = [[1998,100.0],[1999,96.1],[2000,94.2],[2001,91.3],[2002,89.2],[2003,87.2],[2004,82.5],[2005,82.1],[2006,80.4],[2007,81.0],[2008,79.0],[2009,78.4],[2010,73.2],[2011,69.8],[2012,74.2],[2013,70.8],[2014,64.6],[2015,61.0],[2016,56.3],[2017,53.1],[2018,55.3],[2019,53.3],[2020,53.8],[2021,61.3],[2022,59.2],[2023,52.9],[2024,48.6],[2025,48.9],[2026,49.2]];
+const REAL_REPAIR = [[1998,100.0],[1999,103.0],[2000,103.8],[2001,108.0],[2002,111.3],[2003,114.0],[2004,118.2],[2005,120.8],[2006,122.9],[2007,124.5],[2008,126.4],[2009,131.4],[2010,133.4],[2012,138.6],[2013,142.0],[2014,143.7],[2015,148.7],[2016,151.0],[2017,156.3],[2018,161.7],[2019,168.3],[2020,167.0],[2023,185.3]];
+
+/* Not adjusted for inflation. What shoppers pay vs what factories charge. */
+const NOM_APPLIANCES = [[1998,100.0],[1999,98.2],[2000,99.5],[2001,99.2],[2002,98.4],[2003,98.5],[2004,95.6],[2005,98.3],[2006,99.5],[2007,103.0],[2008,104.3],[2009,103.2],[2010,98.0],[2011,96.3],[2012,104.5],[2013,101.2],[2014,93.8],[2015,88.7],[2016,82.9],[2017,79.8],[2018,85.2],[2019,83.6],[2020,85.5],[2021,102.0],[2022,106.2],[2023,98.9],[2024,93.5],[2025,96.6],[2026,100.8]];
+const NOM_PPI = [[1998,100.0],[1999,99.3],[2000,98.1],[2001,95.7],[2002,95.4],[2003,93.3],[2004,92.2],[2005,93.8],[2006,94.5],[2007,95.2],[2008,97.4],[2009,101.0],[2010,100.2],[2011,101.3],[2012,106.7],[2013,106.3],[2014,106.4],[2015,106.9],[2016,106.1],[2017,106.2],[2018,109.1],[2019,113.4],[2020,115.5],[2021,119.4],[2022,133.5],[2023,137.4],[2024,137.6],[2025,139.2],[2026,140.0]];
+
+/* Average age of U.S. light vehicles, years. DOT/BTS Table 1-26; S&P Global Mobility from 2022. */
 const VEHICLE_AGE = [[2002,9.6],[2010,10.8],[2013,11.4],[2016,11.6],[2019,11.8],[2022,12.2],[2023,12.5],[2024,12.6],[2025,12.8]];
 
-/* Share of Americans living under an enforceable right-to-repair law. PIRG calculations.
-   Drives the 100-household population stage. */
+/* Share of Americans living under a state right-to-repair law. PIRG. Drives the household grid. */
 const R2R_STAGE = [
-  { key: "none", pct: 0,     headline: "2022",
-    note: "No state right-to-repair law in force anywhere in the United States." },
-  { key: "five", pct: 20,    headline: "After the first five state laws",
-    note: "New York, California, Minnesota, Oregon, Colorado. “One in five” Americans, per PIRG." },
-  { key: "now",  pct: 25.75, headline: "January 1, 2026",
-    note: "Six new laws took effect on that date. PIRG calculation." },
-  { key: "fall", pct: 35,    headline: "Fall 2026, projected",
-    note: "Connecticut in force July 2026; Texas follows in September." }
+  { key:"none", pct:0,     headline:"2022",
+    note:"No state had a right-to-repair law in force." },
+  { key:"five", pct:20,    headline:"After the first five states",
+    note:"New York, California, Minnesota, Oregon, Colorado. One American in five." },
+  { key:"now",  pct:25.75, headline:"1 January 2026",
+    note:"Six more laws started that day." },
+  { key:"fall", pct:35,    headline:"Autumn 2026",
+    note:"Connecticut started in July. Texas starts in September." }
 ];
 
-/* EU Ecodesign for Sustainable Products Regulation — first working plan, adopted April 2025. */
+/* EU Ecodesign for Sustainable Products Regulation. First working plan, adopted April 2025. */
 const ESPR_TIMELINE = [
-  { year: "2024", label: "ESPR enters into force", detail: "Regulation (EU) 2024/1781, in force 18 July 2024." },
-  { year: "2026", label: "First product groups", detail: "Iron and steel: emissions, energy efficiency, resilience." },
-  { year: "2027", label: "Repairability rules for electronics", detail: "Aluminium, textiles and tyres also enter scope, with measures on longer product lifespans." },
-  { year: "2029", label: "Electronics: durability, recycled content", detail: "Furniture entered scope in 2028; mattresses and electronics face durability, recyclability and recycled-content rules." },
-  { year: "2030", label: "Near-universal lifecycle data", detail: "Almost all product categories require full lifecycle environmental data via the Digital Product Passport." }
+  { year:"2024", label:"The law starts", detail:"Regulation (EU) 2024/1781 comes into force on 18 July." },
+  { year:"2026", label:"First products named", detail:"Iron and steel go first." },
+  { year:"2027", label:"Electronics must be repairable", detail:"Aluminium, textiles and tyres join, with rules on making things last longer." },
+  { year:"2029", label:"Electronics must last", detail:"Durability, recyclability and recycled-content rules. Furniture joined in 2028." },
+  { year:"2030", label:"Nearly everything", detail:"Almost every product needs a Digital Product Passport showing what is inside it." }
 ];
 
-/* STILE assessment, August 2026. Hines & McBride.
-   Scale 1-3, expressed on the Three Horizons: 1 = prevailing system, 3 = emergent only. */
+/* STILE, August 2026. Hines & McBride. Scored 1-3 and read on the Three Horizons. */
 const STILE = [
-  { key: "S", name: "Social acceptance", score: 2.0,
-    rationale: "Holding periods are lengthening in both consumer categories that are tracked: U.S. light vehicles at a record 12.8-year average age, and 42% of U.S. iPhone buyers retiring a device held three or more years, up from 24% five years earlier. No equivalent series exists for appliances. Survey answers on paying more for sustainable products run from 59% (Eurobarometer) down to 17% for a green premium (BCG) — both stated intent, and a spread that wide settles nothing.",
-    watch: "A published U.S. appliance holding-period or installed-base age series. That would move this element more than any further survey." },
-  { key: "T", name: "Technological capability", score: 1.5,
-    rationale: "Modular, repairable architectures ship today: Framework's swappable mainboards, Prusa's self-assembled and upgradeable printers, Groupe SEB's fifteen-year parts commitment, Speed Queen's twenty-five-year test standard. The engineering has been done by other manufacturers, at smaller volumes.",
-    watch: "A mass-volume manufacturer shipping a serviceable modular platform. That moves this element to 1." },
-  { key: "I", name: "Infrastructure", score: 2.5,
-    rationale: "U.S. appliance repair is a $7.0B industry spread across roughly 37,800 businesses with no firm above 5% share (IBISWorld, commercial source). A sector that fragmented offers no national parts-and-service backbone for a manufacturer to plug into. This is the binding constraint on the shift.",
-    watch: "Technician headcount, parts-distribution consolidation, and whether any OEM builds or acquires a national service network." },
-  { key: "L", name: "Legal clearance", score: 1.5,
-    rationale: "Eight states have repair statutes in force and Texas follows in September; coverage reaches roughly 35% of Americans by fall 2026. EU repair obligations applied from July 2026, and ESPR ecodesign rules phase in through 2030. France mandates a durability score at the point of sale. The FTC order against Deere sets an enforcement precedent, though it is proposed rather than final, and several state laws — Oregon's among them — carry no penalties until 2027.",
-    watch: "The 2027 Copyright Office triennial, whether the Deere order is finalized, and each ESPR category date as it lands." },
-  { key: "E", name: "Entrepreneurial zeal", score: 2.5,
-    rationale: "The champions are niche: Speed Queen, Miele, Framework, Prusa, Bundles. No mass-market U.S. manufacturer has claimed the position, and AHAM, the appliance trade association, has opposed repair legislation. The vacancy is the opportunity.",
-    watch: "A durability or repairability claim in mass-market appliance advertising, or a change in the trade association's position." }
+  { key:"S", name:"Do people want it?", short:"Social acceptance", score:1.5,
+    rationale:"They are already behaving that way. In McKinsey's survey of more than 9,000 appliance buyers, the share who wait ten years or more before replacing rose from 35% to 39% in a single year, and buyers now rank durability, efficiency and price above smart features. Cars say the same thing: the average American car is 12.8 years old, a record for the eighth year running. What is still missing is proof that people will pay extra up front — survey answers on that range from 59% to 17%, which is too wide to trust.",
+    watch:"A U.S. figure for how long people keep appliances, published regularly. And any brand that charges more for a durable machine and reports what happened to sales." },
+  { key:"T", name:"Can it be built?", short:"Technological capability", score:1.5,
+    rationale:"Yes, and it already is. Framework sells laptops whose main board you can swap. Prusa sells printers you build yourself and upgrade later. Groupe SEB keeps parts for fifteen years. Speed Queen tests washers to twenty-five years of use. Nobody has to invent anything.",
+    watch:"A big manufacturer shipping a modular machine at a normal price. That would move this to 1." },
+  { key:"I", name:"Is there a system to support it?", short:"Infrastructure", score:2.5,
+    rationale:"No. Fixing appliances in the U.S. is a $7.0B business split among roughly 37,800 firms, none holding more than 5% of it. There is no national repair network a manufacturer can plug into, and no way to get an old machine back from a customer. This is the thing that is actually missing.",
+    watch:"Anyone building or buying a national repair and parts network. Also whether delivery crews start bringing old machines back instead of scrapping them." },
+  { key:"L", name:"Is it allowed and encouraged?", short:"Legal clearance", score:1.5,
+    rationale:"Yes, and increasingly required. Eight states have repair laws in force, Texas makes nine in September, and that covers about 35% of Americans. Europe has set dates through 2030 for products to be durable and repairable. France prints a durability score next to the price. The FTC has taken a manufacturer to court over locking up repair tools and won terms.",
+    watch:"Whether the Deere order is made final, the 2027 Copyright Office review, and each new EU date as it lands." },
+  { key:"E", name:"Is anyone actually doing it?", short:"Entrepreneurial zeal", score:2.5,
+    rationale:"Barely. The companies doing it are small or expensive: Speed Queen, Miele, Framework, Prusa, Bundles. No big American appliance brand has claimed durability as its position, and the industry's own trade group has argued against repair laws. That is why the space is still empty.",
+    watch:"Any mass-market brand advertising on durability or repairability. Or the trade group changing its mind." }
 ];
 
-/* Three Horizons vocabulary, replacing in place / in progress / absent. */
 const HORIZONS = [
-  { n: 1, name: "Prevailing", gloss: "part of the current system" },
-  { n: 2, name: "In transition", gloss: "contested; moving, not settled" },
-  { n: 3, name: "Emergent only", gloss: "exists in the future state, not this one" }
+  { n:1, name:"Already here", gloss:"this is normal today" },
+  { n:2, name:"On its way",   gloss:"moving, not settled" },
+  { n:3, name:"Not yet",      gloss:"still missing" }
 ];
-function horizonFor(score) { return score < 1.75 ? 1 : score < 2.25 ? 2 : 3; }
+function horizonFor(score){ return score < 1.75 ? 1 : score < 2.25 ? 2 : 3; }
 
-/* Population stage: 100 U.S. households. */
+/* 100 U.S. households for the right-to-repair grid. */
 const POP_TYPES = [
   ["washer","washing machine",8],["dryer","clothes dryer",7],["fridge","refrigerator",9],
   ["fridge2","refrigerator",5],["range","range",7],["range2","range",4],
